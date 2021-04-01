@@ -5,6 +5,11 @@
   display: none !important;
 }
 
+.body {
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
 @media all {
   .navbar .nav-item .dropdown-menu {
     display: none;
@@ -18,9 +23,6 @@
   margin-right: 1.5rem;
 }
 
-.background {
-  background-color: aquamarine;
-}
 
 .create {
   background-color: white;
@@ -58,3 +60,5 @@
   position: relative;
   height: 30vh;
 }
+
+

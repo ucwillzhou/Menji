@@ -53,6 +53,9 @@ router.get("/accounts", async (req, res) => {
   }
 });
 
+
+
+
 router.get("/checkout", (req, res) => {
   res.send("Check out Page");
 });
@@ -106,8 +109,6 @@ router.post("/login_user", async (req, res) => {
 
 // add item from db
 router.post("/products", async (req, res) => {
-  //console.log("name: " + req.body.jewelry[0].itemType);
-  //console.log("name: " + req.body.jewelry[0].size);
 
   //send to database
   const post = new Product({
@@ -119,7 +120,6 @@ router.post("/products", async (req, res) => {
     material: req.body.material,
     color: req.body.color,
   
-    jewelry: req.body.jewelry,
     tops: req.body.tops,
     bottoms: req.body.bottoms,
     formalshoe: req.body.formalshoe,
