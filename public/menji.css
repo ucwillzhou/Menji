@@ -1,0 +1,60 @@
+.drop::before {
+  display: none !important;
+}
+.drop::after {
+  display: none !important;
+}
+
+@media all {
+  .navbar .nav-item .dropdown-menu {
+    display: none;
+  }
+  .navbar .nav-item:hover .dropdown-menu {
+    display: block;
+  }
+}
+
+.bi {
+  margin-right: 1.5rem;
+}
+
+.background {
+  background-color: aquamarine;
+}
+
+.create {
+  background-color: white;
+}
+
+.signin {
+  background-color: #dcdcdd;
+}
+
+.form-length {
+  height: 460px;
+  background-color: white;
+}
+
+.vertical-center {
+  min-height: 100%;
+  min-height: 30vh;
+  background-color: #f0efeb;
+}
+
+.container {
+  padding-top: 10%;
+}
+
+.login-block {
+  display: none;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+}
+
+.page-container {
+  position: relative;
+  height: 30vh;
+}
