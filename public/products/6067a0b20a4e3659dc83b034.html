@@ -102,9 +102,17 @@
         </div>
   
         <form class="pt-2">
-          <select class="form-select form-select-lg mb-3 border border-dark"  style="height:45px; width:120px" aria-label=".form-select-lg example">
-            <option class="product-sizes" selected>Select Size</option>
+            
+          <select class="form-select form-select-lg mb-3 border border-dark"  style="height:45px; width:110px" aria-label=".form-select-lg example">
+            <option class="waist-sizes" selected>Waist Size</option>
           </select>
+          
+          <select class="form-select form-select-lg mb-3 border border-dark"  style="height:45px; width:110px" aria-label=".form-select-lg example">
+            <option class="length-sizes" selected>Length Size</option>
+          </select>
+
+
+
             <button type="button" class="btn btn-block btn-dark col-lg-6 col-xs-8">ADD TO CART</button>
         </form>
       </div>
@@ -138,19 +146,23 @@ $.ajax({
   url: "/menji/inventory",
   success: function(data){
     let product = data.filter(obj => {
-      return obj._id === "6067a0de0a4e3659dc83b035"
+      return obj._id === "6067a0b20a4e3659dc83b034"
     })
     
-    let sizeCount = product[0].tops[0].sizes.length - 1;
+
 
     $(".product-name").text(product[0].name)
     $(".product-price").text("CAD $" + product[0].price + ".00")
-    $(".product-color").css("background-color", product[0].color)
+    $(".product-color").css("background-color", "#add8e6")
     $(".product-material").text("Material: " + product[0].material)
 
-    for(let i = 0; i < product[0].tops[0].sizes.length; i++){
-      $(".product-sizes").after("<option value=" + i +">"+ (product[0].tops[0].sizes[sizeCount-i].size).toUpperCase() +"</option>")
+    console.log( product[0].bottoms[0].sizes[0].waist)
+    
+    for(let i = 0; i < product[0].bottoms[0].sizes.length; i++){
+      $(".waist-sizes").after("<option value=" + i +">"+ "W" + product[0].bottoms[0].sizes[i].waist + " |  L" + product[0].bottoms[0].sizes[i].length +"</option>")
     }
+    
+
   }
 });
 
