@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 require("dotenv/config");
 
 app.use(express.static("./public"));
+app.use(express.static("/public/products"));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
