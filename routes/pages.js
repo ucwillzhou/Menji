@@ -3,7 +3,6 @@ const router = express.Router();
 const Account = require("../models/Account");
 const Product = require("../models/Product");
 
-
 router.get("/", (req, res) => {
   res.send("Main Page");
 });
@@ -32,7 +31,6 @@ router.get("/inventory", async (req, res) => {
   try {
     const products = await Product.find();
     res.json(products);
-    
   } catch (error) {
     res.json({ message: error });
   }
@@ -47,14 +45,10 @@ router.get("/accounts", async (req, res) => {
   try {
     const posts = await Account.find();
     res.json(posts);
-
   } catch (error) {
     res.json({ message: error });
   }
 });
-
-
-
 
 router.get("/checkout", (req, res) => {
   res.send("Check out Page");
@@ -88,28 +82,23 @@ router.post("/register_user", async (req, res) => {
   res.end();
 });
 
-
 router.post("/login_user", async (req, res) => {
-  
-  console.log("SIGN IN EMAIL: " + req.body.email)
-  console.log("SIGN IN PASSWORD: " + req.body.password)
+  console.log("SIGN IN EMAIL: " + req.body.email);
+  console.log("SIGN IN PASSWORD: " + req.body.password);
 
   try {
-
-    const posts = await Account.findOne({email: req.body.email, password: req.body.password});
+    const posts = await Account.findOne({
+      email: req.body.email,
+      password: req.body.password,
+    });
     res.json(posts);
-
   } catch (error) {
-
     res.json({ message: error });
   }
-
 });
-
 
 // add item from db
 router.post("/products", async (req, res) => {
-
   //send to database
   const post = new Product({
     serial_no: req.body.serial_no,
@@ -119,7 +108,7 @@ router.post("/products", async (req, res) => {
     image: req.body.image,
     material: req.body.material,
     color: req.body.color,
-  
+
     tops: req.body.tops,
     bottoms: req.body.bottoms,
     formalshoe: req.body.formalshoe,
@@ -127,8 +116,7 @@ router.post("/products", async (req, res) => {
     boot: req.body.boot,
     jewelry: req.body.jewelry,
     wallet: req.body.wallet,
-    belt: req.body.belt
-    
+    belt: req.body.belt,
   });
 
   try {
@@ -140,11 +128,5 @@ router.post("/products", async (req, res) => {
 
   res.end();
 });
-
-
-
-
-
-
 
 module.exports = router;
