@@ -82,3 +82,7 @@
 .product-select {
   margin-left: 0rem;
 }
+
+.length-holder {
+  display: none;
+}

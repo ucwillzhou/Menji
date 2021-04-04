@@ -111,6 +111,7 @@ $.ajax({
   url: "/menji/inventory",
   success: function(data){
 
+
     for (let i = 0; i < data.length; i++) {
         const sneakerIndex = data[i].sneaker.length;
         const formalIndex = data[i].formalshoe.length;

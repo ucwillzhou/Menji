@@ -79,6 +79,7 @@
       </div>
   </nav>
 
+
   <!--  <div class="items row-cols-md-3 g-2">-->
   <div class="items row mt-5">
 
@@ -94,13 +95,18 @@
         <div class="pt-2">
           <p class="product-material h4 pb-2"></p>
           <p class="product-color-text h4">Color</p>
-          <span class="product-color border border-dark"></span>
         </div>
   
         <form class="pt-2">
-          <select class="form-select form-select-lg mb-3 border border-dark"  style="height:45px; width:120px" aria-label=".form-select-lg example">
-            <option class="product-sizes" selected>Select Size</option>
+          <select class="form-select form-select-lg mb-3 border border-dark waist-holder"  style="height:45px; width:120px" aria-label=".form-select-lg example">
+            <option class="product-sizes waist-sizes" selected>Select Size</option>
           </select>
+
+          <select class="form-select form-select-lg mb-3 border border-dark length-holder"  style="height:45px; width:120px" aria-label=".form-select-lg example">
+            <option class="length-sizes" selected>Length Size</option>
+          </select>
+
+
             <button type="button" class="btn btn-block btn-dark col-lg-6 col-xs-8">ADD TO CART</button>
         </form>
       </div>
@@ -129,25 +135,48 @@
 
 
 <script>
+
 $.ajax({
   type: "GET",
   url: "/menji/inventory",
   success: function(data){
-    let product = data.filter(obj => {
-      return obj._id === "6067a0de0a4e3659dc83b035"
-    })
-    
-    let sizeCount = product[0].tops[0].sizes.length - 1;
 
+    let queryString = location.search.substring(1);
+    let temp = queryString.split("|");
+    let itemID = temp[0];
+    let itemType = temp[1]
+    let bottomSize = [28, 30, 32, 34, 36];
+    let topsSize = ["XS", "S", "M", "L", " XL"]
+
+    let product = data.filter(obj => {
+      return obj._id === itemID
+    })
+
+
+    let sizeCount = product[0][itemType][0].sizes.length - 1;
+    
     $(".product-name").text(product[0].name)
     $(".product-price").text("CAD $" + product[0].price + ".00")
-    $(".product-color").css("background-color", product[0].color)
+    $(".product-color-text").text("Color: " + product[0].color)
     $(".product-material").text("Material: " + product[0].material)
 
-    for(let i = 0; i < product[0].tops[0].sizes.length; i++){
-      $(".product-sizes").after("<option value=" + i +">"+ (product[0].tops[0].sizes[sizeCount-i].size).toUpperCase() +"</option>")
+    for(let i = 0; i < product[0][itemType][0].sizes.length; i++){
+
+        if(itemType == "bottoms"){
+            $(".waist-sizes").after("<option value=" + i +">"+ "W" + (product[0][itemType][0].sizes[sizeCount - i].waist) + "</option>")
+            $(".length-sizes").after("<option value=" + i +">"+ "L" + (product[0][itemType][0].sizes[sizeCount - i].length)  + "</option>")
+            $(".length-holder").show()
+        }
+        else if(itemType == "tops"){
+          $(".product-sizes").after("<option value=" + i +">"+ (product[0][itemType][0].sizes[sizeCount - i].size).toUpperCase() +"</option>")
+        }
+        else{
+          $(".product-sizes").after("<option value=" + i +">"+ (product[0][itemType][0].sizes[sizeCount - i].size) +"</option>")
+        }
     }
   }
+
+
 });
 
 </script>
