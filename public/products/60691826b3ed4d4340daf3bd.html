@@ -79,6 +79,7 @@
       </div>
   </nav>
 
+
   <!--  <div class="items row-cols-md-3 g-2">-->
   <div class="items row mt-5">
 
@@ -134,18 +135,18 @@ $.ajax({
   url: "/menji/inventory",
   success: function(data){
     let product = data.filter(obj => {
-      return obj._id === "6067a0de0a4e3659dc83b035"
+      return obj._id === "60691826b3ed4d4340daf3bd"
     })
     
-    let sizeCount = product[0].tops[0].sizes.length - 1;
+    let sizeCount = product[0].boot[0].sizes.length - 1;
 
     $(".product-name").text(product[0].name)
     $(".product-price").text("CAD $" + product[0].price + ".00")
     $(".product-color").css("background-color", product[0].color)
     $(".product-material").text("Material: " + product[0].material)
 
-    for(let i = 0; i < product[0].tops[0].sizes.length; i++){
-      $(".product-sizes").after("<option value=" + i +">"+ (product[0].tops[0].sizes[sizeCount-i].size).toUpperCase() +"</option>")
+    for(let i = 0; i < product[0].boot[0].sizes.length; i++){
+      $(".product-sizes").after("<option value=" + i +">"+ (product[0].boot[0].sizes[sizeCount - i].size) +"</option>")
     }
   }
 });
