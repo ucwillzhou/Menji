@@ -98,7 +98,7 @@ $.ajax({
     for(let i = 0; i < data.length; i++){
       $(".pop-up-inventory").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 row shadow'></div>")
       .append($("<div class='col-6 col-xl-3 col-lg-3'></div>")
-      .append("<img src='../media/shirt01.png' alt='Product Image' class='card-img-top img-fluid'>"))
+      .append("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>"))
       .append($("<div class='col-6 col-xl-7 col-xl-7 mt-4'></div>")
       .append("<p class='px-1 mb-2'>Serial Number: " + data[i].serial_no +"</p>")
       .append("<p class='px-1 mb-2'>Item: " + data[i].name +"</p>")

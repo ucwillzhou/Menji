@@ -84,7 +84,7 @@
 
 
   <!--  <div class="items row-cols-md-3 g-2">-->
-  <div class="items row">
+  <div class="items row no-gutters">
 
   </div>
 
@@ -111,11 +111,13 @@ $.ajax({
   url: "/menji/inventory",
   success: function(data){
     console.log("DATA", data)
+    let n = 0
 
     for (let i = 0; i < data.length; i++) {
+
       $(".items").append(
-        $("<div class='col col-6 col-md-4 card-base pt-5 pb-5 d-flex justify-content-center'></div>").append(
-          $("<div class='card text-center border-secondary shadow'></div>").click(function(){
+        $("<div class='col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 card-base p-5 d-flex justify-content-center'></div>").append(
+          $("<div class='card text-center border-0'></div>").click(function(){
           
             for(let key in data[i]){
               if(data[i][key].length == 1){
@@ -126,7 +128,7 @@ $.ajax({
 
             //window.location.href = "/products/itemPage.html?" + data[i]._id 
           }).append(
-            $("<img src='../media/shirt01.png' alt='Product Image' class='card-img-top'>")).append(
+            $("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>")).append(
             //$("<img src='" + data[i].url +"' alt='Product Image' class='card-img-top'>")).append(
               $("<div class='card-body'>")
               .append("<h5 class='card-title'>" + data[i].name + "</h5>")

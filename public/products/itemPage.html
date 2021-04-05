@@ -83,9 +83,7 @@
   <!--  <div class="items row-cols-md-3 g-2">-->
   <div class="items row mt-5">
 
-    <div class="picture col-lg-6 mb-5">
-        <img src='../media/shirt01.png' alt='Product Image' class='card-img-top img-fluid'>
-    </div>
+    <div class="product-picture col-lg-6 mb-5"></div>
 
     <div class="menu col-lg-5">
       <div class="product-select">
@@ -159,7 +157,7 @@ $.ajax({
     $(".product-price").text("CAD $" + product[0].price + ".00")
     $(".product-color-text").text("Color: " + product[0].color)
     $(".product-material").text("Material: " + product[0].material)
-    //$(".picture")....
+    $(".product-picture").append($("<img src='../media/" + product[0].image +"' alt='Product Image' class='card-img-top'>"))
 
     for(let i = 0; i < product[0][itemType][0].sizes.length; i++){
 
@@ -171,7 +169,15 @@ $.ajax({
         else if(itemType == "tops"){
           $(".product-sizes").after("<option value=" + i +">"+ (product[0][itemType][0].sizes[sizeCount - i].size).toUpperCase() +"</option>")
         }
-        else{
+        else if (itemType == "wallet") {
+          console.log(itemType)
+          $(".form-select").hide()
+        }
+        else if (itemType == "belt") {
+          $(".product-sizes").after("<option value=" + i +">"+ (product[0][itemType][0].sizes[sizeCount - i].waist) +"</option>")
+        }
+        else {
+          console.log((product[0][itemType][0].sizes[sizeCount - i].size))
           $(".product-sizes").after("<option value=" + i +">"+ (product[0][itemType][0].sizes[sizeCount - i].size) +"</option>")
         }
     }
