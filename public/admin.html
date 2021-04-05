@@ -11,10 +11,11 @@
 
 </head>
 
-<body class="body">
+<body class="body bh">
   <nav class="navbar border-bottom border-dark navbar-expand-lg navbar-light bg-white">
     <div class="container-fluid">
       <a class="navbar-brand font-weight-bold" href="menji.html">MENJI.</a>
+
       <div class="d-flex flex-row order-2 order-sm-3">
         <ul class="navbar-nav flex-row">
           <li class="nav-item">
@@ -24,7 +25,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="register.html"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+            <a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
               <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
             </svg></a>
           </li>
@@ -37,65 +38,36 @@
 
         </ul>
       </div>
-      <button class="navbar-toggler me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active drop" href="clothing.html" id="navbarDropdownMenuLink" role="button" data-bs-hover="dropdown" aria-expanded="false">
-              CLOTHING
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="tops.html">TOPS</a></li>
-              <li><a class="dropdown-item" href="bottoms.html">BOTTOMS</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle drop" href="footwear.html" id="navbarDropdownMenuLink" role="button" data-bs-hover="dropdown" aria-expanded="false">
-              FOOTWEAR
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="sneakers.html">SNEAKERS</a></li>
-              <li><a class="dropdown-item" href="dressshoes.html">FORMAL SHOES</a></li>
-              <li><a class="dropdown-item" href="boots.html">BOOTS</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle drop" href="accessories.html" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              ACCESSORIES
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="jewelry.html">JEWELRY</a></li>
-              <li><a class="dropdown-item" href="wallet.html">WALLETS</a></li>
-              <li><a class="dropdown-item" href="belts.html">BELTS</a></li>
-            </ul>
-          </li>
 
 
-
-        </ul>
-      </div>
   </nav>
 
 
   <!--  <div class="items row-cols-md-3 g-2">-->
-  <div class="items row">
 
-  </div>
+    <div class="row">
+      <nav class="nav d-flex flex-w flex-sm-column navbar-light border-right border-dark bg-white p-3">
+        <a class="nav-link active fs text-secondary vertical-text" href="#">USERS</a>
+        <a class="nav-link fs text-secondary vertical-text" href="#">ORDERS</a>
+        <a class="nav-link fs text-secondary vertical-text" href="#">INVENTORY</a>
+      </nav>
+  
+      <div class="inline-display col-xl-9 col-lg-9 mt-5 fs">
 
+        <div class="vert-title fs p-2 ">USERS</div>
+        <div class="pop-up-users list-group p-2 fs-2"></div>
+        <div class="pop-up-inventory list-group p-4 fs-2"></div>
 
+      </div>
+
+    </div>
 
   <div class="page-container"></div>
     <nav class="navbar navbar-expand-lg navbar-light bg-white footer">
       <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">CONTACT</span>
-        <span class="navbar-brand mb-0 h1">&#169 2021 MENJI. ALL RIGHTS RESERVED</span>
-        <span class="navbar-brand mb-0 h1 font-weight-bold">MENJI.</span>
+        <span class="navbar-brand mb-0">CONTACT</span>
+        <span class="navbar-brand mb-0">&#169 2021 MENJI. ALL RIGHTS RESERVED</span>
+        <span class="navbar-brand mb-0 font-weight-bold">MENJI.</span>
       </div>
     </nav>
   </div>
@@ -108,10 +80,16 @@
 
 $.ajax({
   type: "GET",
-  url: "/menji/inventory",
+  url: "/menji/accounts",
   success: function(data){
-    console.log("DATA", data)
+    for(let i = 0; i < data.length; i++){
+      $(".pop-up-users").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 shadow-sm'></div>")
+        .append("<p class='px-5 col-1 col-md-6 col-lg-6 col-xl-6'>Name: " + data[i].first_name + " " + data[i].last_name + " </p>")
+        .append("<p class='px-5 col-1 col-md-6 col-lg-6 col-xl-6'>Email: " + data[i].email))
 
+    }
+
+/*
     for (let i = 0; i < data.length; i++) {
       $(".items").append(
         $("<div class='col col-6 col-md-4 card-base pt-5 pb-5 d-flex justify-content-center'></div>").append(
@@ -132,12 +110,51 @@ $.ajax({
               .append("<h5 class='card-title'>" + data[i].name + "</h5>")
               .append("<p class='card-text'>" + "$" + data[i].price + "</p>"))))
     }
-    
-
+  */ 
   }
 });
 
+$.ajax({
+  type: "GET",
+  url: "/menji/inventory",
+  success: function(data){
 
+    for(let i = 0; i < data.length; i++){
+      $(".pop-up-inventory").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 row shadow'></div>")
+      .append($("<div class='col-6 col-xl-3 col-lg-3'></div>")
+      .append("<img src='../media/shirt01.png' alt='Product Image' class='card-img-top img-fluid'>"))
+      .append($("<div class='col-6 col-xl-7 col-xl-7 mt-4'></div>")
+      .append("<p class='px-1 mb-2'>Serial Number: " + data[i].serial_no +"</p>")
+      .append("<p class='px-1 mb-2'>Item: " + data[i].name +"</p>")
+      .append("<p class='px-1 mb-2'>Price: $"+ data[i].price + ".00" + "</p>"))
+      .append($("<div class='col-1 col-xl-2 col-l-2 mt-1 d-grid delete-button'></div>")
+      .append("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>")))      
+    }
+  }
+})
+
+
+$(".pop-up-inventory").hide()
+$(".vertical-text").click(function(){
+    let currentCategory = $(this).text()
+    $(".vert-title").text(currentCategory)
+
+    if(currentCategory == "USERS"){
+      $(".pop-up-users").show()
+      $(".pop-up-inventory").hide()
+    }
+
+    if(currentCategory == "ORDERS"){
+      $(".pop-up-users").hide()
+      $(".pop-up-inventory").hide()
+    }
+
+    if(currentCategory == "INVENTORY"){
+      $(".pop-up-users").hide()
+      $(".pop-up-inventory").show()
+    }
+
+  })
       
 
 </script>

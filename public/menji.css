@@ -86,3 +86,11 @@
 .length-holder {
   display: none;
 }
+
+.fs {
+  font-size: calc(0.8rem + 0.8vw);
+}
+
+.fs-2 {
+  font-size: calc(0.5rem + 0.8vw);
+}
