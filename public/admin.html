@@ -100,17 +100,16 @@
                       <div class="row pb-3">
                         <div class="col">
                           <div class="input-group">
-                            <label class="input-group-text" for="inputGroupSelect01">Category</label>
-                            <select class="form-select col" id="inputGroupSelect01">
-                              <option selected>Select</option>
-                              <option value="1">Top</option>
-                              <option value="2">Bottom</option>
-                              <option value="3">Formal Shoe</option>
-                              <option value="4">Sneaker</option>
-                              <option value="5">Boot</option>
-                              <option value="6">Jewelry</option>
-                              <option value="7">Wallet</option>
-                              <option value="8">Belt</option>
+                            <label class="input-group-text">Category</label>
+                            <select class="form-select col">
+                              <option value="1" name="tops">Top</option>
+                              <option value="2" name="bottoms">Bottom</option>
+                              <option value="3" name="formalshoe">Formal Shoe</option>
+                              <option value="4" name="sneaker">Sneaker</option>
+                              <option value="5" name="boot">Boot</option>
+                              <option value="6" name="jewelry">Jewelry</option>
+                              <option value="7" name="wallet">Wallet</option>
+                              <option value="8" name="belt">Belt</option>
                             </select>
                           </div>
 
@@ -201,7 +200,7 @@ $.ajax({
 
 
 $(".pop-up-inventory").hide()
-$(".button-add").hide()
+//$(".button-add").hide()
 
 $(".vertical-text").click(function(){
     let currentCategory = $(this).text()
@@ -227,6 +226,16 @@ $(".vertical-text").click(function(){
 $(".modal-clear").click(function(){
   $(".form-clear").trigger("reset")
 })
+
+$(".form-select").click(function(){
+  let category = $(this).find('option:selected').attr("name");
+
+  //create new fields here
+
+  console.log(category)
+})
+
+
 </script>
 
 </html>
