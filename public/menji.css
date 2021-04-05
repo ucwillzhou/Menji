@@ -101,6 +101,16 @@
   object-fit: contain;
 }
 
-.card-text, .card-title {
+.card-text,
+.card-title {
   font-size: calc(0.6rem + 0.6vw);
+}
+
+input {
+  color: black !important;
+}
+
+option,
+select {
+  font-size: smaller !important;
 }

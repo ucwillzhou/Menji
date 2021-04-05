@@ -54,7 +54,85 @@
   
       <div class="inline-display col-xl-9 col-lg-9 mt-5 fs">
 
-        <div class="vert-title fs p-2 ">CUSTOMERS</div>
+        <div class="row m-1 ">
+          <div class="vert-title col-5 col-sm-7 col-md-8 col-lg-8 col-xl-9 col-xxl-10 fs">CUSTOMERS</div>
+          <div class="button-add col-6 col-sm-4 col-md-4 col-lg-4 col-xl-3">
+            <button type="button" class="btn btn-secondary text-nowrap add-button btn-block" data-bs-toggle="modal"  data-bs-target="#exampleModal">ADD</button>
+
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ADD PRODUCT</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    
+                    <form class="form-clear">
+                      <div class="row pb-3 pt-3">
+                        <div class="col">
+                          <input type="text" class="form-control" placeholder="Item Name" name="name">
+                        </div>
+                      </div>
+
+                      <div class="row pb-3">
+                        <div class="col-5">
+                          <input type="text" class="form-control text-break" placeholder="Serial Number" name="serial_no">
+                        </div>
+                        <div class="col-4">
+                          <input type="text" class="form-control" placeholder="Color" name="color">
+                        </div>
+                        <div class="col-3">
+                          <input type="text" class="form-control" placeholder="Price" name="price">
+                        </div>
+                      </div>
+
+                      <div class="row pb-3">
+                        <div class="col">
+                          <input type="text" class="form-control text-break" placeholder="Image URL" name="image">
+                        </div>
+                        <div class="col">
+                          <input type="text" class="form-control text-break" placeholder="Material" name="material">
+                        </div>
+                      </div>
+
+                      <div class="row pb-3">
+                        <div class="col">
+                          <div class="input-group">
+                            <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                            <select class="form-select col" id="inputGroupSelect01">
+                              <option selected>Select</option>
+                              <option value="1">Top</option>
+                              <option value="2">Bottom</option>
+                              <option value="3">Formal Shoe</option>
+                              <option value="4">Sneaker</option>
+                              <option value="5">Boot</option>
+                              <option value="6">Jewelry</option>
+                              <option value="7">Wallet</option>
+                              <option value="8">Belt</option>
+                            </select>
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </form>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-clear" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
         <div class="pop-up-users list-group p-2 fs-2"></div>
         <div class="pop-up-inventory list-group p-4 fs-2"></div>
 
@@ -96,7 +174,7 @@ $.ajax({
   url: "/menji/inventory",
   success: function(data){
     for(let i = 0; i < data.length; i++){
-      $(".pop-up-inventory").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 row shadow'></div>")
+      $(".pop-up-inventory").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 row shadow' id='"+ i +"'></div>")
       .append($("<div class='col-6 col-xl-3 col-lg-3'></div>")
       .append("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>"))
       .append($("<div class='col-6 col-xl-7 col-xl-7 mt-4'></div>")
@@ -104,13 +182,27 @@ $.ajax({
       .append("<p class='px-1 mb-2'>Item: " + data[i].name +"</p>")
       .append("<p class='px-1 mb-2'>Price: $"+ data[i].price + ".00" + "</p>"))
       .append($("<div class='col-1 col-xl-2 col-l-2 mt-1 d-grid delete-button'></div>")
-      .append("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>")))      
+      .append("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>").click(function(){
+        document.getElementById(i).remove()
+        $.ajax({
+          type: "DELETE",
+          url: "/menji/" + data[i]._id,
+          success: function(response){
+            //console.log("Delete Sucessful")
+          },
+          error: function(error){
+            console.log(error)
+          } 
+        })
+      })))      
     }
   }
 })
 
 
 $(".pop-up-inventory").hide()
+$(".button-add").hide()
+
 $(".vertical-text").click(function(){
     let currentCategory = $(this).text()
     $(".vert-title").text(currentCategory)
@@ -128,10 +220,13 @@ $(".vertical-text").click(function(){
     if(currentCategory == "INVENTORY"){
       $(".pop-up-users").hide()
       $(".pop-up-inventory").show()
+      $(".button-add").show()
     }
   })
       
-
+$(".modal-clear").click(function(){
+  $(".form-clear").trigger("reset")
+})
 </script>
 
 </html>

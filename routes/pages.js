@@ -129,4 +129,13 @@ router.post("/products", async (req, res) => {
   res.end();
 });
 
+router.delete("/:_id", async (req, res) => {
+  try {
+    const removeProduct = await Product.deleteOne({ _id: req.params._id });
+    res.json(removeProduct);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
 module.exports = router;
