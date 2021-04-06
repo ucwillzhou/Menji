@@ -240,7 +240,7 @@ $(".modal-submit").click(function(){
   let image = document.getElementById("input_image").value
   let material = document.getElementById("input_material").value
 
-
+ 
   $(".form-clear").trigger("reset")
   $(".delete-holder").remove()
 
@@ -327,7 +327,7 @@ $(document).ready(function(){
     else if(category == "belt"){
       $(".delete-holder").remove()
       drawModal(bottomSize)
-      $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
+      $(".category-group").after($("<div class='row delete-holder'></div>")
       .append($("<div class='col input-group'></div>")))
 
     }
