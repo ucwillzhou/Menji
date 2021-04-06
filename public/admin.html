@@ -73,28 +73,28 @@
 
                       <div class="row pb-3 pt-3">
                         <div class="col">
-                          <input type="text" class="form-control" placeholder="Item Name" name="name">
+                          <input type="text" class="form-control" id="input_name" placeholder="Item Name" name="name">
                         </div>
                       </div>
 
                       <div class="row pb-3">
                         <div class="col-5">
-                          <input type="text" class="form-control text-break" placeholder="Serial Number" name="serial_no">
+                          <input type="text" class="form-control" id="input_number" placeholder="Serial Number" name="serial_no">
                         </div>
                         <div class="col-4">
-                          <input type="text" class="form-control" placeholder="Color" name="color">
+                          <input type="text" class="form-control" id="input_color" placeholder="Color" name="color">
                         </div>
                         <div class="col-3">
-                          <input type="text" class="form-control" placeholder="Price" name="price">
+                          <input type="text" class="form-control" id="input_price" placeholder="Price" name="price">
                         </div>
                       </div>
 
                       <div class="row pb-3">
                         <div class="col">
-                          <input type="text" class="form-control text-break" placeholder="Image URL" name="image">
+                          <input type="text" class="form-control text-break" id="input_image" placeholder="Image URL" name="image">
                         </div>
                         <div class="col">
-                          <input type="text" class="form-control text-break" placeholder="Material" name="material">
+                          <input type="text" class="form-control text-break" id="input_material" placeholder="Material" name="material">
                         </div>
                       </div>
 
@@ -231,8 +231,21 @@ $(".modal-clear").click(function(){
 })
 
 $(".modal-submit").click(function(){
+
+
+  let name = document.getElementById("input_name").value
+  let number = document.getElementById("input_number").value
+  let color = document.getElementById("input_color").value
+  let price = document.getElementById("input_price").value
+  let image = document.getElementById("input_image").value
+  let material = document.getElementById("input_material").value
+
+
   $(".form-clear").trigger("reset")
   $(".delete-holder").remove()
+
+
+
 })
 
 
@@ -304,7 +317,7 @@ $(document).ready(function(){
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2'>Stock</span>")
       .append("<input type='text' class='form-control text-break' placeholder='Stock' name='stock'>")))
-      
+
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2'>Style</span>")
       .append("<input type='text' class='form-control text-break' placeholder='Enter' name='style'>")))
