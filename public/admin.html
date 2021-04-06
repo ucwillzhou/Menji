@@ -60,7 +60,7 @@
             <button type="button" class="btn btn-secondary text-nowrap add-button btn-block" data-bs-toggle="modal"  data-bs-target="#exampleModal">ADD</button>
 
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -101,7 +101,7 @@
                       <div class="row pb-3 category-group">
                         <div class="col">
                           <div class="input-group">
-                            <label class="input-group-text col-2">Category</label>
+                            <label class="input-group-text col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2">Category</label>
                             <select class="form-select col">
                               <option selected>Choose</option>
                               <option value="1" name="tops">Top</option>
@@ -236,8 +236,10 @@ $(".modal-submit").click(function(){
 })
 
 
-let size = ["XS", "S", "M", "L", "XL"].reverse()
-let shoeSize = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12].reverse()
+let size = ["XL", "L", "M","S","XS"]
+let shoeSize = [12, 11.5, 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7]
+let jewelrySize = [11, 10, 9]
+let bottomSize = [36, 34, 32, 30, 28]
 
 $(document).ready(function(){
     $(".form-select").change(function(){
@@ -251,17 +253,11 @@ $(document).ready(function(){
       }
     }
     else if(category == "bottoms"){
-      
+      $(".delete-holder").remove()
     }
     else if(category == "formalshoe"){
       $(".delete-holder").remove()
-
-      for(let i = 0; i < shoeSize.length; i++){
-        $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
-      .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2'>"+ shoeSize[i]+"</span>")
-      .append("<input type='text' class='form-control text-break' placeholder='Stock' name='image'>")))
-      }
-
+      drawModal(shoeSize)
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group'></div>")
       .append("<span class='input-group-text col-2'>Style</span>")
@@ -270,7 +266,56 @@ $(document).ready(function(){
       .append("<option value='1' name='oxford'>Oxford</option>")
       .append("<option value='2' name='loafer'>Loafer</option>")
       .append("<option value='3' name='derbie'>Derbie</option>"))))
+    }
+    else if(category == "sneaker"){
+      $(".delete-holder").remove()
+      drawModal(shoeSize)
+      $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
+      .append($("<div class='col input-group'></div>")
+      .append("<span class='input-group-text col-2'>Style</span>")
+      .append($("<select class='form-select col'>")
+      .append("<option selected>Choose</option>")
+      .append("<option value='1' name='lifestyle'>Lifestyle</option>")
+      .append("<option value='2' name='running'>Running</option>"))))
+    }
+    else if(category == "boot"){
+      $(".delete-holder").remove()
+      drawModal(shoeSize)
+      $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
+      .append($("<div class='col input-group'></div>")
+      .append("<span class='input-group-text col-2'>Style</span>")
+      .append($("<select class='form-select col'>")
+      .append("<option selected>Choose</option>")
+      .append("<option value='1' name='heeled'>Heeled</option>")
+      .append("<option value='2' name='laceup'>Laceup</option>")
+      .append("<option value='3' name='chelsea'>Chelsea</option>"))))
+    }
+    else if(category == "jewelry"){
+      $(".delete-holder").remove()
+      drawModal(jewelrySize)
+      $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
+      .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2'>Style</span>")
+      .append("<input type='text' class='form-control text-break' placeholder='Enter' name='style'>")))
 
+    }
+    else if(category == "wallet"){
+      $(".delete-holder").remove()
+
+      $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
+      .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2'>Stock</span>")
+      .append("<input type='text' class='form-control text-break' placeholder='Stock' name='stock'>")))
+      
+      $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
+      .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2'>Style</span>")
+      .append("<input type='text' class='form-control text-break' placeholder='Enter' name='style'>")))
+
+
+    }
+    else if(category == "belt"){
+      $(".delete-holder").remove()
+      drawModal(bottomSize)
+      $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
+      .append($("<div class='col input-group'></div>")))
 
     }
     else{
@@ -278,6 +323,14 @@ $(document).ready(function(){
     }
     });
 });
+
+function drawModal(size){
+  for(let i = 0; i < size.length; i++){
+    $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
+    .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2'>" + "Size: "+ size[i]+"</span>")
+    .append("<input type='text' class='form-control text-break' placeholder='Stock' name='stock'>")))
+  }
+}
 
 
 </script>
