@@ -102,7 +102,7 @@
                         <div class="col">
                           <div class="input-group">
                             <label class="input-group-text col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2">Category</label>
-                            <select class="form-select col">
+                            <select class="form-select col" id="form-select-category">
                               <option selected>Choose</option>
                               <option value="1" name="tops">Top</option>
                               <option value="2" name="bottoms">Bottom</option>
@@ -135,7 +135,7 @@
 
 
         <div class="pop-up-users list-group p-2 fs-2"></div>
-        <div class="pop-up-inventory list-group p-4 fs-2"></div>
+        <div class="pop-up-inventory list-group p-4 fs-2" id="pop-up-inventory-reload"></div>
 
       </div>
 
@@ -202,7 +202,7 @@ $.ajax({
 
 
 $(".pop-up-inventory").hide()
-//$(".button-add").hide()
+$(".button-add").hide()
 
 $(".vertical-text").click(function(){
     let currentCategory = $(this).text()
@@ -239,12 +239,80 @@ $(".modal-submit").click(function(){
   let price = document.getElementById("input_price").value
   let image = document.getElementById("input_image").value
   let material = document.getElementById("input_material").value
+  let formCategory = $("#form-select-category option:selected" ).attr("name")
+  let sizeObject;
 
+  if(formCategory == "tops"){
+    let topStock = []
+    for(let i = 0; i < size.length; i++){
+      let itemStockPerSize = $("#option-input-" + i).val()
+      topStock.push(itemStockPerSize)
+      //console.log($("#input-group-category-" + i).text()  + ": " + $("#option-input-" + i).val())
+    }
+    topStock.reverse();
+    sizeObject = JSON.stringify([{"size":"xsmall", "stock":topStock[0]}, {"size":"small", "stock":topStock[1]}, 
+    {"size":"medium", "stock":topStock[2]}, {"size":"large", "stock":topStock[3]}, {"size":"xlarge", "stock":topStock[4]}])
+    //submit here
+  }
+
+  console.log("SIZE: " + sizeObject)
+
+  $.ajax({
+      type: "POST",
+      url: "/menji/products",
+      data: JSON.stringify({    
+        "serial_no": number,
+        "name": name,
+        "price": price,
+        "image": "widetemp.png",
+        "material": material,
+        "color": color,
+        formCategory: [{
+            "sizes" : sizeObject
+        }]
+      }),
+      success: function(data) { 
+
+      },
+      error: function(error){
+            console.log(error)
+      },
+      contentType: "application/json",
+      dataType: "json"
+    });
  
+  //$("#option-input-" + i).val()
   $(".form-clear").trigger("reset")
   $(".delete-holder").remove()
-
-
+  $(".list-group-item").remove()
+  //refresh page
+  $.ajax({
+  type: "GET",
+  url: "/menji/inventory",
+  success: function(data){
+    for(let i = 0; i < data.length; i++){
+      $(".pop-up-inventory").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 row shadow' id='"+ i +"'></div>")
+      .append($("<div class='col-6 col-xl-3 col-lg-3'></div>")
+      .append("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>"))
+      .append($("<div class='col-6 col-xl-7 col-xl-7 mt-4'></div>")
+      .append("<p class='px-1 mb-2'>Serial Number: " + data[i].serial_no +"</p>")
+      .append("<p class='px-1 mb-2'>Item: " + data[i].name +"</p>")
+      .append("<p class='px-1 mb-2'>Price: $"+ data[i].price + ".00" + "</p>"))
+      .append($("<div class='col-1 col-xl-2 col-l-2 mt-1 d-grid delete-button'></div>")
+      .append("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>").click(function(){
+        document.getElementById(i).remove()
+        $.ajax({
+          type: "DELETE",
+          url: "/menji/" + data[i]._id,
+          success: function(response){
+            //console.log("Delete Sucessful")
+          },
+          error: function(error){
+            console.log(error)
+          } 
+        })
+      })))
+    }}})
 
 })
 
@@ -261,8 +329,8 @@ $(document).ready(function(){
       $(".delete-holder").remove()
       for(let i = 0; i < size.length; i++){
         $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
-      .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2'>"+ size[i]+"</span>")
-      .append("<input type='text' class='form-control text-break' placeholder='Stock' name='image'>")))
+      .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2' id='input-group-category-"+i+"'>"+ size[i]+"</span>")
+      .append("<input type='text' id='option-input-"+i+ "' class='form-control text-break' placeholder='Stock' name='image'>")))
       }
     }
     else if(category == "bottoms"){
