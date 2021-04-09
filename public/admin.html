@@ -113,6 +113,7 @@
                               <option value="7" name="wallet">Wallet</option>
                               <option value="8" name="belt">Belt</option>
                             </select>
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">Add</button>
                           </div>
                         </div>
                       </div>
@@ -183,7 +184,7 @@ $.ajax({
       .append("<p class='px-1 mb-2'>Item: " + data[i].name +"</p>")
       .append("<p class='px-1 mb-2'>Price: $"+ data[i].price + ".00" + "</p>"))
       .append($("<div class='col-1 col-xl-2 col-l-2 mt-1 d-grid delete-button'></div>")
-      .append("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>").click(function(){
+      .append($("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>").click(function(){
         document.getElementById(i).remove()
         $.ajax({
           type: "DELETE",
@@ -195,14 +196,14 @@ $.ajax({
             console.log(error)
           } 
         })
-      })))      
+      }))))
     }
   }
 })
 
 
 $(".pop-up-inventory").hide()
-$(".button-add").hide()
+//$(".button-add").hide()
 
 $(".vertical-text").click(function(){
     let currentCategory = $(this).text()
@@ -228,19 +229,21 @@ $(".vertical-text").click(function(){
 $(".modal-clear").click(function(){
   $(".form-clear").trigger("reset")
   $(".delete-holder").remove()
+  $("#button-addon1").hide()
 })
 
 $(".modal-submit").click(function(){
 
-
+  $("#button-addon1").hide()
   let name = document.getElementById("input_name").value
   let number = document.getElementById("input_number").value
   let color = document.getElementById("input_color").value
   let price = document.getElementById("input_price").value
   let image = document.getElementById("input_image").value
   let material = document.getElementById("input_material").value
-  let formCategory = $("#form-select-category option:selected" ).attr("name")
+  let formCategory = $("#form-select-category option:selected").attr("name")
   let sizeObject;
+
 
   if(formCategory == "tops"){
     let topStock = []
@@ -250,14 +253,10 @@ $(".modal-submit").click(function(){
       //console.log($("#input-group-category-" + i).text()  + ": " + $("#option-input-" + i).val())
     }
     topStock.reverse();
-    sizeObject = JSON.stringify([{"size":"xsmall", "stock":topStock[0]}, {"size":"small", "stock":topStock[1]}, 
-    {"size":"medium", "stock":topStock[2]}, {"size":"large", "stock":topStock[3]}, {"size":"xlarge", "stock":topStock[4]}])
-    //submit here
-  }
+    sizeObject = [{"size":"xsmall", "stock":topStock[0]}, {"size":"small", "stock":topStock[1]}, 
+      {"size":"medium", "stock":topStock[2]}, {"size":"large", "stock":topStock[3]}, {"size":"xlarge", "stock":topStock[4]}]
 
-  console.log("SIZE: " + sizeObject)
-
-  $.ajax({
+      $.ajax({
       type: "POST",
       url: "/menji/products",
       data: JSON.stringify({    
@@ -267,25 +266,256 @@ $(".modal-submit").click(function(){
         "image": "widetemp.png",
         "material": material,
         "color": color,
-        formCategory: [{
+        "tops": [{
             "sizes" : sizeObject
         }]
       }),
-      success: function(data) { 
-
+      success: function(data) {
       },
       error: function(error){
-            console.log(error)
+        console.log(error)
       },
       contentType: "application/json",
       dataType: "json"
     });
- 
-  //$("#option-input-" + i).val()
+
+  }
+  
+  else if(formCategory == "bottoms"){
+
+    let waistSize = $(".drop-option-waist option:selected").attr("name")
+    let lengthSize = $(".drop-option-length option:selected").attr("name")
+    let bottomStock = $(".option-input-stock").val()
+    let waistList = []
+    let lengthList = []
+    let bottomStockList = []
+
+    //get waist sizes from modal
+    $(".drop-option-waist option:selected").each(function(){
+      waistList.push($(this).attr("name"))
+    })
+    //get length sizes from modal
+    $(".drop-option-length option:selected").each(function(){
+      lengthList.push($(this).attr("name"))
+    })
+
+    $(".option-input-stock").each(function(){
+      bottomStockList.push($(this).val())
+    })
+    sizeObject = [];
+    for(let i = 0; i < bottomStockList.length; i++){
+      let shoeObj = {"waist":waistList[i], "length":lengthList[i], "stock":bottomStockList[i]}
+      sizeObject.push(shoeObj)
+    }
+    
+    $.ajax({
+        type: "POST",
+        url: "/menji/products",
+        data: JSON.stringify({    
+          "serial_no": number,
+          "name": name,
+          "price": price,
+          "image": "widetemp.png",
+          "material": material,
+          "color": color,
+          "bottoms": [{
+              "sizes" : sizeObject
+          }]
+        }),
+        success: function(data) {
+        },
+        error: function(error){
+          console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+      });
+
+  }
+  else if(formCategory == "formalshoe" || formCategory == "sneaker" || formCategory == "boot"){
+    let shoeStock = []
+    let style = $("#drop-option option:selected").attr("name")
+
+    for(let i = 0; i < shoeSize.length; i++){
+      let itemStockPerSize = $("#option-input-" + i).val()
+      shoeStock.push(itemStockPerSize)
+    }
+    shoeStock.reverse();
+    sizeObject = [{"style":style, "size":"7", "stock":shoeStock[0]}, {"style":style, "size":"7.5", "stock":shoeStock[1]}, {"style":style, "size":"8", "stock":shoeStock[2]}, {"style":style, "size":"8.5", "stock":shoeStock[3]}, {"style":style, "size":"9", "stock":shoeStock[4]}, 
+      {"style":style, "size":"9.5", "stock":shoeStock[5]}, {"style":style, "size":"10", "stock":shoeStock[6]}, {"style":style, "size":"10.5", "stock":shoeStock[7]}, {"style":style, "size":"11", "stock":shoeStock[8]},
+      {"style":style, "size":"11.5", "stock":shoeStock[9]}, {"style":style, "size":"12", "stock":shoeStock[10]}]
+
+    if(formCategory == "formalshoe"){
+      $.ajax({
+        type: "POST",
+        url: "/menji/products",
+        data: JSON.stringify({    
+          "serial_no": number,
+          "name": name,
+          "price": price,
+          "image": "widetemp.png",
+          "material": material,
+          "color": color,
+          "formalshoe": [{
+              "sizes" : sizeObject
+          }]
+        }),
+        success: function(data) {
+        },
+        error: function(error){
+          console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+      });
+    }
+    else if(formCategory == "sneaker"){
+      $.ajax({
+        type: "POST",
+        url: "/menji/products",
+        data: JSON.stringify({    
+          "serial_no": number,
+          "name": name,
+          "price": price,
+          "image": "widetemp.png",
+          "material": material,
+          "color": color,
+          "sneaker": [{
+              "sizes" : sizeObject
+          }]
+        }),
+        success: function(data) {
+        },
+        error: function(error){
+          console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+      });
+    } else { //boot
+      $.ajax({
+        type: "POST",
+        url: "/menji/products",
+        data: JSON.stringify({    
+          "serial_no": number,
+          "name": name,
+          "price": price,
+          "image": "widetemp.png",
+          "material": material,
+          "color": color,
+          "boot": [{
+              "sizes" : sizeObject
+          }]
+        }),
+        success: function(data) {
+        },
+        error: function(error){
+          console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+      });
+    }
+  }
+  else if(formCategory == "jewelry"){
+    let style = $("#drop-option").val()
+    let ringStock = []
+    for(let i = 0; i < jewelrySize.length; i++){
+      let itemStockPerSize = $("#option-input-" + i).val()
+      ringStock.push(itemStockPerSize)
+    }
+    ringStock.reverse();
+    sizeObject = [{"style": style, "size": 9, "stock": ringStock[0]}, {"style": style, "size": 10,"stock": ringStock[1]}, {"style": style, "size": 11,"stock": ringStock[2]}]
+    $.ajax({
+        type: "POST",
+        url: "/menji/products",
+        data: JSON.stringify({    
+          "serial_no": number,
+          "name": name,
+          "price": price,
+          "image": "widetemp.png",
+          "material": material,
+          "color": color,
+          "jewelry": [{
+              "sizes" : sizeObject
+          }]
+        }),
+        success: function(data) {
+        },
+        error: function(error){
+          console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+      });
+  }
+  else if(formCategory == "wallet"){
+    let walletStock = $("#drop-option").val()
+    let walletStyle = $("#wallet-style").val()
+    sizeObject = [{"style":walletStyle, "stock":walletStock}]
+    $.ajax({
+        type: "POST",
+        url: "/menji/products",
+        data: JSON.stringify({    
+          "serial_no": number,
+          "name": name,
+          "price": price,
+          "image": "widetemp.png",
+          "material": material,
+          "color": color,
+          "wallet": [{
+              "sizes" : sizeObject
+          }]
+        }),
+        success: function(data) {
+        },
+        error: function(error){
+          console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+      });
+  }
+  else if(formCategory == "belt"){
+    let waistStock = [];
+    for(let i = 0; i < bottomSize.length; i++){
+      let itemStockPerSize = $("#option-input-" + i).val()
+      waistStock.push(itemStockPerSize)
+    }
+    waistStock.reverse()
+    sizeObject = [{"waist":28, "stock":waistStock[0]}, {"waist":30, "stock":waistStock[1]}, {"waist":32, "stock":waistStock[2]}, {"waist":34, "stock":waistStock[3]}, {"waist":36, "stock":waistStock[4]}]
+    $.ajax({
+        type: "POST",
+        url: "/menji/products",
+        data: JSON.stringify({    
+          "serial_no": number,
+          "name": name,
+          "price": price,
+          "image": "widetemp.png",
+          "material": material,
+          "color": color,
+          "belt": [{
+              "sizes" : sizeObject
+          }]
+        }),
+        success: function(data) {
+        },
+        error: function(error){
+          console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+      });
+  }
+
+
+
+
   $(".form-clear").trigger("reset")
   $(".delete-holder").remove()
   $(".list-group-item").remove()
   //refresh page
+  
   $.ajax({
   type: "GET",
   url: "/menji/inventory",
@@ -299,7 +529,7 @@ $(".modal-submit").click(function(){
       .append("<p class='px-1 mb-2'>Item: " + data[i].name +"</p>")
       .append("<p class='px-1 mb-2'>Price: $"+ data[i].price + ".00" + "</p>"))
       .append($("<div class='col-1 col-xl-2 col-l-2 mt-1 d-grid delete-button'></div>")
-      .append("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>").click(function(){
+      .append($("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>").click(function(){
         document.getElementById(i).remove()
         $.ajax({
           type: "DELETE",
@@ -311,7 +541,7 @@ $(".modal-submit").click(function(){
             console.log(error)
           } 
         })
-      })))
+      }))))
     }}})
 
 })
@@ -327,6 +557,7 @@ $(document).ready(function(){
       let category = $(this).children("option:selected").attr("name");
     if(category == "tops"){
       $(".delete-holder").remove()
+      $("#button-addon1").hide()
       for(let i = 0; i < size.length; i++){
         $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2' id='input-group-category-"+i+"'>"+ size[i]+"</span>")
@@ -335,14 +566,38 @@ $(document).ready(function(){
     }
     else if(category == "bottoms"){
       $(".delete-holder").remove()
+      $("#button-addon1").show()
+
+      $(".category-group").after($("<div class='row pb-3 delete-holder next-addon'></div>")
+      .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-3 col-sm-5 col-md-5 col-lg-4 col-xl-4'>Waist:</span>")
+      .append($("<select class='form-select col drop-option-waist'>")
+      .append("<option selected>Choose</option>")
+      .append("<option value='1' name='28'>28</option>")
+      .append("<option value='2' name='30'>30</option>")
+      .append("<option value='3' name='32'>32</option>")
+      .append("<option value='4' name='34'>34</option>")
+      .append("<option value='5' name='36'>36</option>")))
+      .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-3 col-sm-5 col-md-5 col-lg-4 col-xl-4'>Length:</span>")
+      .append($("<select class='form-select col drop-option-length'>")
+      .append("<option selected>Choose</option>")
+      .append("<option value='1' name='28'>28</option>")
+      .append("<option value='2' name='30'>30</option>")
+      .append("<option value='3' name='32'>32</option>")
+      .append("<option value='4' name='34'>34</option>")
+      .append("<option value='5' name='36'>36</option>")))
+      .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-3 col-sm-5 col-md-5 col-lg-4 col-xl-4'>Stock:</span>")
+      .append("<input type='text' class='form-control text-break option-input-stock' placeholder='Stock'>")))
+    
+
     }
     else if(category == "formalshoe"){
       $(".delete-holder").remove()
+      $("#button-addon1").hide()
       drawModal(shoeSize)
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group'></div>")
       .append("<span class='input-group-text col-2'>Style</span>")
-      .append($("<select class='form-select col'>")
+      .append($("<select class='form-select col' id='drop-option'>")
       .append("<option selected>Choose</option>")
       .append("<option value='1' name='oxford'>Oxford</option>")
       .append("<option value='2' name='loafer'>Loafer</option>")
@@ -350,50 +605,55 @@ $(document).ready(function(){
     }
     else if(category == "sneaker"){
       $(".delete-holder").remove()
+      $("#button-addon1").hide()
       drawModal(shoeSize)
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group'></div>")
       .append("<span class='input-group-text col-2'>Style</span>")
-      .append($("<select class='form-select col'>")
+      .append($("<select class='form-select col' id='drop-option'>")
       .append("<option selected>Choose</option>")
       .append("<option value='1' name='lifestyle'>Lifestyle</option>")
       .append("<option value='2' name='running'>Running</option>"))))
     }
     else if(category == "boot"){
       $(".delete-holder").remove()
+      $("#button-addon1").hide()
       drawModal(shoeSize)
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group'></div>")
       .append("<span class='input-group-text col-2'>Style</span>")
-      .append($("<select class='form-select col'>")
-      .append("<option selected>Choose</option>")
+      .append($("<select class='form-select col' id='drop-option'>")
+      .append("<option selected >Choose</option>")
       .append("<option value='1' name='heeled'>Heeled</option>")
       .append("<option value='2' name='laceup'>Laceup</option>")
       .append("<option value='3' name='chelsea'>Chelsea</option>"))))
     }
     else if(category == "jewelry"){
       $(".delete-holder").remove()
+      $("#button-addon1").hide()
       drawModal(jewelrySize)
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2'>Style</span>")
-      .append("<input type='text' class='form-control text-break' placeholder='Enter' name='style'>")))
+      .append("<input type='text' class='form-control text-break' id='drop-option' placeholder='Enter' name='style'>")))
 
     }
     else if(category == "wallet"){
       $(".delete-holder").remove()
+      $("#button-addon1").hide()
 
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2'>Stock</span>")
-      .append("<input type='text' class='form-control text-break' placeholder='Stock' name='stock'>")))
+      .append("<input type='text' class='form-control text-break' id='drop-option' placeholder='Stock' name='stock'>")))
 
       $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
       .append($("<div class='col input-group'></div>").append("<span class='input-group-text col-2'>Style</span>")
-      .append("<input type='text' class='form-control text-break' placeholder='Enter' name='style'>")))
+      .append("<input type='text' class='form-control text-break' id='wallet-style' placeholder='Enter' name='style'>")))
 
 
     }
     else if(category == "belt"){
       $(".delete-holder").remove()
+      $("#button-addon1").hide()
       drawModal(bottomSize)
       $(".category-group").after($("<div class='row delete-holder'></div>")
       .append($("<div class='col input-group'></div>")))
@@ -401,6 +661,7 @@ $(document).ready(function(){
     }
     else{
       $(".delete-holder").remove()
+      $("#button-addon1").hide()
     }
     });
 });
@@ -409,10 +670,36 @@ function drawModal(size){
   for(let i = 0; i < size.length; i++){
     $(".category-group").after($("<div class='row pb-3 delete-holder'></div>")
     .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-5 col-sm-3 col-md-3 col-lg-2 col-xl-2'>" + "Size: "+ size[i]+"</span>")
-    .append("<input type='text' class='form-control text-break' placeholder='Stock' name='stock'>")))
+    .append("<input type='text' class='form-control text-break' id='option-input-"+i+ "' placeholder='Stock' name='stock'>")))
   }
 }
 
+function addBottoms(){
+  $(".form-clear").children().last().after($("<div class='row pb-3 delete-holder'></div>")
+      .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-3 col-sm-5 col-md-5 col-lg-4 col-xl-4'>Waist:</span>")
+      .append($("<select class='form-select col drop-option-waist'>")
+      .append("<option selected>Choose</option>")
+      .append("<option value='1' name='28'>28</option>")
+      .append("<option value='2' name='30'>30</option>")
+      .append("<option value='3' name='32'>32</option>")
+      .append("<option value='4' name='34'>34</option>")
+      .append("<option value='5' name='36'>36</option>")))
+      .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-3 col-sm-5 col-md-5 col-lg-4 col-xl-4'>Length:</span>")
+      .append($("<select class='form-select col drop-option-length'>")
+      .append("<option selected>Choose</option>")
+      .append("<option value='1' name='28'>28</option>")
+      .append("<option value='2' name='30'>30</option>")
+      .append("<option value='3' name='32'>32</option>")
+      .append("<option value='4' name='34'>34</option>")
+      .append("<option value='5' name='36'>36</option>")))
+      .append($("<div class='col input-group '></div>").append("<span class='input-group-text col-3 col-sm-5 col-md-5 col-lg-4 col-xl-4'>Stock:</span>")
+      .append("<input type='text' class='form-control text-break option-input-stock' placeholder='Stock'>")))
+}
+
+
+$("#button-addon1").click(function(){
+  addBottoms()
+})
 
 </script>
 

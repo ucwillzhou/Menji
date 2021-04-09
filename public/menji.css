@@ -115,3 +115,7 @@ option,
 select {
   font-size: smaller !important;
 }
+
+#button-addon1 {
+  display: none;
+}
