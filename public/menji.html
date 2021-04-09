@@ -116,20 +116,49 @@ $.ajax({
         $("<div class='col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 card-base p-5 d-flex justify-content-center'></div>").append(
           $("<div class='card text-center border-0'></div>").click(function(){
           
-            for(let key in data[i]){
-              if(data[i][key].length == 1){
-                console.log(key.type)
-                window.location.href = "/products/itemPage.html?" + data[i]._id + "|" + key
+              for(let key in data[i]){
+                if(data[i][key].length == 1){
+                  console.log(key.type)
+                  window.location.href = "/products/itemPage.html?" + data[i]._id + "|" + key
+                }
               }
-            }
 
-            //window.location.href = "/products/itemPage.html?" + data[i]._id 
-          }).append(
-            $("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>")).append(
-            //$("<img src='" + data[i].url +"' alt='Product Image' class='card-img-top'>")).append(
-              $("<div class='card-body'>")
-              .append("<h5 class='card-title'>" + data[i].name + "</h5>")
-              .append("<p class='card-text'>" + "$" + data[i].price + "</p>"))))
+              //window.location.href = "/products/itemPage.html?" + data[i]._id 
+            })
+            .append(
+              $("<div class='card-image'>")
+                .append("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>"))
+              //$("<img src='" + data[i].url +"' alt='Product Image' class='card-img-top'>")).append(
+            .append(
+                $("<div class='card-body'>")
+                  .append("<h5 class='card-title'>" + data[i].name + "</h5>")
+                  .append("<p class='card-text'>" + "$" + data[i].price + "</p>"))
+          ))
+      /*
+      $(".items").append(
+        $("<div class='col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 card-base p-5 d-flex justify-content-center'></div>").append(
+          $("<div class='card text-center border-0'></div>").append(
+            $("<a class= 'product-link' href='#'>").click(function(){
+          
+              for(let key in data[i]){
+                if(data[i][key].length == 1){
+                  console.log(key.type)
+                  window.location.href = "/products/itemPage.html?" + data[i]._id + "|" + key
+                }
+              }
+
+              //window.location.href = "/products/itemPage.html?" + data[i]._id 
+            })
+            .append(
+              $("<div class='card-image'>")
+                .append("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>"))
+              //$("<img src='" + data[i].url +"' alt='Product Image' class='card-img-top'>")).append(
+            .append(
+                $("<div class='card-body'>")
+                  .append("<h5 class='card-title'>" + data[i].name + "</h5>")
+                  .append("<p class='card-text'>" + "$" + data[i].price + "</p>"))
+      )))
+      */
     }
     
 

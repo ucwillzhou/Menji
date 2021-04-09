@@ -80,12 +80,6 @@
   </nav>
 
 
-  <!--  <div class="items row-cols-md-3 g-2">-->
-  <div class="items row">
-
-  </div>
-
-
 
   <div class="page-container"></div>
     <nav class="navbar navbar-expand-lg navbar-light bg-white footer">
@@ -103,40 +97,6 @@
 
 <script>
 
-$.ajax({
-  type: "GET",
-  url: "/menji/inventory",
-  success: function(data){
-
-    for (let i = 0; i < data.length; i++) {
-        const topsIndex = data[i].tops.length;
-        const bottomsIndex = data[i].bottoms.length;
-
-        if(topsIndex == 1 || bottomsIndex == 1){
-            $(".items").append(
-        $("<div class='col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 card-base p-5 d-flex justify-content-center'></div>").append(
-          $("<div class='card text-center border-0'</div>").click(function(){
-
-            for(let key in data[i]){
-              if(data[i][key].length == 1){
-                console.log(key.type)
-                window.location.href = "/products/itemPage.html?" + data[i]._id + "|" + key
-              }
-            }
-            
-          }).append(
-            $("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>")).append(
-            //$("<img src='" + data[i].url +"' alt='Product Image' class='card-img-top'>")).append(
-              $("<div class='card-body'>")
-              .append("<h5 class='card-title'>" + data[i].name + "</h5>")
-              .append("<p class='card-text'>" + "$" + data[i].price + "</p>"))))
-        }
-    }
-  }
-});
-
-
-      
 
 </script>
 

@@ -18,11 +18,6 @@
 
       <div class="d-flex flex-row order-2 order-sm-3">
         <ul class="navbar-nav flex-row">
-          <li class="nav-item">
-            <a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg></a>
-          </li>
 
           <li class="nav-item">
             <a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -48,7 +43,6 @@
     <div class="row">
       <nav class="nav d-flex flex-w flex-sm-column navbar-light border-right border-dark bg-white p-3">
         <a class="nav-link active fs text-secondary vertical-text" href="#">CUSTOMERS</a>
-        <a class="nav-link fs text-secondary vertical-text" href="#">ORDERS</a>
         <a class="nav-link fs text-secondary vertical-text" href="#">INVENTORY</a>
       </nav>
   
@@ -183,7 +177,7 @@ $.ajax({
       .append("<p class='px-1 mb-2'>Serial Number: " + data[i].serial_no +"</p>")
       .append("<p class='px-1 mb-2'>Item: " + data[i].name +"</p>")
       .append("<p class='px-1 mb-2'>Price: $"+ data[i].price + ".00" + "</p>"))
-      .append($("<div class='col-1 col-xl-2 col-l-2 mt-1 d-grid delete-button'></div>")
+      .append($("<div class='col-1 col-xl-2 col-lg-2 mt-1 d-grid delete-button'></div>")
       .append($("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>").click(function(){
         document.getElementById(i).remove()
         $.ajax({
@@ -211,11 +205,6 @@ $(".vertical-text").click(function(){
 
     if(currentCategory == "CUSTOMERS"){
       $(".pop-up-users").show()
-      $(".pop-up-inventory").hide()
-    }
-
-    if(currentCategory == "ORDERS"){
-      $(".pop-up-users").hide()
       $(".pop-up-inventory").hide()
     }
 

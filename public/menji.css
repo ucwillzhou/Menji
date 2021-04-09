@@ -61,6 +61,11 @@
   height: 30vh;
 }
 
+.product-link:link, .product-link:visited, .product-link:active {
+  text-decoration: none;
+  color: black
+}
+
 .product-name {
   font-size: 3vw !important;
 }
