@@ -91,6 +91,8 @@ router.post("/login_user", async (req, res) => {
       email: req.body.email,
       password: req.body.password,
     });
+    console.log("post: " + posts);
+    //window.location = "/menji.html";
     res.json(posts);
   } catch (error) {
     res.json({ message: error });

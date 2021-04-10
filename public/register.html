@@ -49,7 +49,7 @@
           </li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle drop" href="accessories.html" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle drop" href="../accessories.html" id="navbarDropdownMenuLink" role="button" data-bs-hover="dropdown" aria-expanded="false">
               ACCESSORIES
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -73,7 +73,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+            <a class="nav-link" href="cart.html"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
               <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
             </svg></a>
           </li>
@@ -126,18 +126,18 @@
 
             </form>
 
-            <form class="login-block" action="/menji/login_user" method="POST">
+            <form class="login-block" action="menji.html">
               <div class="mb-3">
                 <label class="form-label font-weight-bold">EMAIL ADDRESS</label>
-                <input type="email" class="form-control" name="email">
+                <input type="email" class="form-control form-email" name="email">
               </div>
               <div class="mb-3">
                 <label class="form-label font-weight-bold">PASSWORD</label>
-                <input type="password" class="form-control" name="password">
+                <input type="password" class="form-control form-password" name="password">
               </div>
   
               <div class="text-center pt-4">
-                <button type="submit" class="btn btn-block btn-dark " >LOG IN</button>
+                <button type="button " class="btn btn-block btn-dark login-button">LOG IN</button>
               </div>
             </form>
 
@@ -159,6 +159,50 @@
 </body>
 
 <script>
+
+    
+
+
+$(document).ready(function(){
+
+
+  $(".login-button").click(function(e){
+    let email = $(".form-email").val()
+    let password = $(".form-password").val()
+
+    e.preventDefault()
+
+    $.ajax({
+        type: "POST",
+        url: "/menji/login_user",
+        data: JSON.stringify({    
+          "email": email,
+          "password": password
+        }),
+        success: function(data) {
+
+          let token = data._id
+          localStorage.setItem("token", token)
+          window.location.href = "menji.html"
+        },
+        error: function(error){
+          console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+    }); 
+  })
+})
+
+
+
+  //
+    
+
+
+
+
+
     $(".signin").click(function(){
         $(this).css("background", "white")
         $(".create").css("background", "#dcdcdd")
@@ -174,8 +218,6 @@
         $(".login-block").hide()
         $(".form-length").css("height", "460px")
     })
-
-
 
 </script>
 

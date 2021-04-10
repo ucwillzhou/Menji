@@ -46,7 +46,7 @@
           </li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle drop" href="accessories.html" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle drop" href="../accessories.html" id="navbarDropdownMenuLink" role="button" data-bs-hover="dropdown" aria-expanded="false">
               ACCESSORIES
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -60,7 +60,8 @@
       </div>
       
       <div class="order-2">
-        
+
+
         <ul class="navbar-nav flex-row align-items-center">
 
           <li class="nav-item d-block">
@@ -70,7 +71,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+            <a class="nav-link" href="cart.html"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-cart" viewBox="0 0 16 16">
               <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
             </svg></a>
           </li>
@@ -79,6 +80,13 @@
 
   </nav>
 
+
+  <div class="row">
+    <div class="pop-up-inventory list-group p-4 fs-2 col-12 col-md-8 col-lg-8 col-xl-8" id="pop-up-inventory-reload"></div>
+    <div class="check-out-tab mt-4 col-12 shadow-lg col-md-4 col-lg-4 col-xl-4">
+      <h2 class="text-center order-summary pb-4 pt-3 ">Order Summary</h1>
+    </div>
+  </div>
 
 
   <div class="page-container"></div>
@@ -96,6 +104,90 @@
 
 
 <script>
+
+let cartItems = localStorage
+let tax = 0
+let total = 0
+
+  
+$.ajax({
+  type: "GET",
+  url: "/menji/inventory",
+  success: function(data){
+
+    let subTotal = 0;
+
+    for(let i = 0; i < cartItems.length; i++){
+      let itemId = cartItems.key(i)
+      let itemSize = cartItems.getItem(itemId)
+      let waist;
+      let length;
+    
+
+      //console.log("Id: " + itemId)
+
+      if(itemSize.includes("waist")){
+        let bottomObject = JSON.parse(itemSize)
+        waist = bottomObject.waist;
+        length = bottomObject.length;
+        //console.log("W: " + waist + " " + "L: " + length)
+        itemSize = "W" + waist + "-L" + length 
+      }
+
+
+      for(let j = 0; j < data.length; j++){
+        
+        if(data[j]._id == itemId){
+          console.log("CART ITEM " + data[j].name)
+          subTotal += data[j].price
+
+          $(".pop-up-inventory").append($("<div class='d-flex justify-content-start list-group-item mb-3 row shadow' id='"+ j +"'></div>")
+          .append($("<div class='col-6 col-xl-2 col-lg-3'></div>")
+          .append("<img src='../media/" + data[j].image +"' alt='Product Image' class='card-img-top'>"))
+          .append($("<div class='col-6 col-xl-6 col-xl-7 mt-4'></div>")
+          .append("<p class='px-1 mb-2'>Item: " + data[j].name +"</p>")
+          .append("<p class='px-1 mb-2'>Size: " + itemSize +"</p>")
+          .append("<p class='px-1 mb-2'>Price: $"+ data[j].price + ".00" + "</p>"))
+          .append($("<div class='col-1 col-xl-3 col-lg-2 mt-1 d-grid delete-button'></div>")
+          .append($("<button type='button' class='btn btn-danger text-nowrap'>Remove Item</button>").click(function(){
+            document.getElementById(j).remove()
+            //remove item from local storage here
+            localStorage.removeItem(itemId)
+
+            location.reload()
+
+
+          }))))
+        }
+
+      }
+
+    }
+
+    let tax = (subTotal * 0.05).toFixed(2);
+    let total = (parseFloat(subTotal) + parseFloat(tax)).toFixed(2)
+
+    if(cartItems.length == 0){
+      $(".order-summary").after("<p class='sub-total checkout-text'>"+ cartItems.length+ " Item: CAD $" + subTotal.toFixed(2) +"</p>")
+    }
+    else{
+      $(".order-summary").after("<p class='sub-total checkout-text'>"+ cartItems.length+ " Items: CAD $" + subTotal.toFixed(2) +"</p>")
+
+    }
+    $(".sub-total").after($("<p class='checkout-text'>Tax: CAD $"+ tax +" </p>").append("<hr class='line'></hr>")
+    .append("<p class='total checkout-text check-out-button-place pb-5'>Total: CAD $"+ total + "</p>"))
+
+    $(".check-out-button-place").after("<button type='button' class='btn btn-block btn-secondary checkout-button'>Checkout</button>")
+    
+    if(cartItems.length == 0){
+      $(".checkout-button").hide()
+    }
+  }
+  
+
+})
+
+
 
 
 </script>
