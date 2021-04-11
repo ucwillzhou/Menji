@@ -128,7 +128,7 @@ select {
 }
 
 .checkout-text {
-  font-size: calc(0.6rem + 1vw);
+  font-size: calc(0.8rem + 0.8vw);
 }
 
 .line {

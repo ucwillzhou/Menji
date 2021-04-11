@@ -3,30 +3,6 @@ const router = express.Router();
 const Account = require("../models/Account");
 const Product = require("../models/Product");
 
-router.get("/", (req, res) => {
-  res.send("Main Page");
-});
-
-router.get("/admin", (req, res) => {
-  res.send("Admin Page");
-});
-
-router.get("/admin/add", (req, res) => {
-  res.send("Admin Page Add");
-});
-
-router.get("/clothing", (req, res) => {
-  res.send("Clothing Page");
-});
-
-router.get("/footwear", (req, res) => {
-  res.send("Footwear Page");
-});
-
-router.get("/accessories", (req, res) => {
-  res.send("Accessories Page");
-});
-
 router.get("/inventory", async (req, res) => {
   try {
     const products = await Product.find();
@@ -58,7 +34,9 @@ router.get("/cart", (req, res) => {
   res.send("Cart Page");
 });
 
-//
+//update add post PUT orders to accounts!!!!!!!!!!!!!
+
+//get orders
 
 router.post("/register_user", async (req, res) => {
   console.log("First Name: " + req.body.first_name);
@@ -71,6 +49,7 @@ router.post("/register_user", async (req, res) => {
     last_name: req.body.last_name,
     email: req.body.email,
     password: req.body.password,
+    orders: req.body.orders,
   });
   try {
     const savedPost = await post.save();
@@ -91,8 +70,6 @@ router.post("/login_user", async (req, res) => {
       email: req.body.email,
       password: req.body.password,
     });
-    console.log("post: " + posts);
-    //window.location = "/menji.html";
     res.json(posts);
   } catch (error) {
     res.json({ message: error });

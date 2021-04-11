@@ -67,7 +67,7 @@
         <ul class="navbar-nav flex-row align-items-center">
 
           <li class="nav-item d-block">
-            <a class="nav-link" href="register.html"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+            <a class="nav-link register-button"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-person-fill" viewBox="0 0 16 16">
               <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
             </svg></a>
           </li>
@@ -97,43 +97,42 @@
 
       <div class="row form-length">
         <div class="col border border-top-0 border-dark pt-3 ">
-            <form class="create-block register row g-2" action="/menji/register_user" method="POST">
+            <form class="create-block register row g-2">
               <div class="col-6 mb-3">
                 <label for="validationDefault01" class="form-label font-weight-bold">FIRST NAME</label>
-                <input type="text" class="form-control" name="first_name">
+                <input type="text" class="form-control form-first-name" name="first_name">
               </div>
               <div class="col-6 mb-3">
                 <label class="form-label font-weight-bold">LAST NAME</label>
-                <input type="text" class="form-control" name="last_name">
+                <input type="text" class="form-control form-last-name" name="last_name">
               </div>
               
               <div class="col-12 mb-3">
                 <label class="form-label font-weight-bold">EMAIL ADDRESS</label>
-                <input type="email" class="form-control" name="email">
+                <input type="email" class="form-control form-email-signup" name="email">
               </div>
               <div class="col-12 mb-3">
                 <label class="form-label font-weight-bold">PASSWORD</label>
-                <input type="password" class="form-control" name="password">
+                <input type="password" class="form-control form-password-signup" name="password">
               </div>
               <div class="col-12 mb-3">
                 <label class="form-label font-weight-bold">CONFIRM PASSWORD</label>
-                <input type="password" class="form-control">
+                <input type="password" class="form-control form-confirm-signup">
               </div>
   
               <div class="col-12 text-center pt-4">
-                <button type="submit" class="btn btn-block btn-dark ">CONFIRM</button>
+                <button type="submit" class="btn btn-block btn-dark signup-button">CONFIRM</button>
               </div>
-
             </form>
 
-            <form class="login-block" action="menji.html">
+            <form class="login-block">
               <div class="mb-3">
                 <label class="form-label font-weight-bold">EMAIL ADDRESS</label>
-                <input type="email" class="form-control form-email" name="email">
+                <input type="email" class="form-control form-email-login" name="email">
               </div>
               <div class="mb-3">
                 <label class="form-label font-weight-bold">PASSWORD</label>
-                <input type="password" class="form-control form-password" name="password">
+                <input type="password" class="form-control form-password-login" name="password">
               </div>
   
               <div class="text-center pt-4">
@@ -164,39 +163,72 @@
 
 
 $(document).ready(function(){
-
-
   $(".login-button").click(function(e){
-    let email = $(".form-email").val()
-    let password = $(".form-password").val()
-
+    let email = $(".form-email-login").val()
+    let password = $(".form-password-login").val()
     e.preventDefault()
-
-    $.ajax({
-        type: "POST",
-        url: "/menji/login_user",
-        data: JSON.stringify({    
-          "email": email,
-          "password": password
-        }),
-        success: function(data) {
-
-          let token = data._id
-          localStorage.setItem("token", token)
-          window.location.href = "menji.html"
-        },
-        error: function(error){
-          console.log(error)
-        },
-        contentType: "application/json",
-        dataType: "json"
-    }); 
+    if(email == "" || password == ""){
+      alert("ENTER INFORMATION")
+    }
+    else{
+      $.ajax({
+          type: "POST",
+          url: "/menji/login_user",
+          data: JSON.stringify({    
+            "email": email,
+            "password": password
+          }),
+          success: function(data) {
+            try{
+              let token = data._id
+              localStorage.setItem("token", token)
+              window.location.href = "menji.html"
+            } catch (err){
+              alert("Username or password is incorrect. Try again.")
+            }
+          },
+          error: function(error){
+          },
+          contentType: "application/json",
+          dataType: "json"
+      }); 
+      }
   })
 })
 
+$(document).ready(function(){
+  $(".signup-button").click(function(e){
 
-
-  //
+    let firstname = $(".form-first-name").val()
+    let lastname = $(".form-last-name").val()
+    let email = $(".form-email-signup").val()
+    let password = $(".form-password-signup").val()
+    e.preventDefault()
+    if(email == "" || password == "" || firstname == "" || lastname == ""){
+      alert("MISSING INFORMATION")
+    }
+    else{
+      $.ajax({
+          type: "POST",
+          url: "/menji/register_user",
+          data: JSON.stringify({
+            "first_name": firstname,
+            "last_name": lastname,    
+            "email": email,
+            "password": password
+          }),
+          success: function(data) {
+              window.location.href = "menji.html"
+          },
+          error: function(error){
+            
+          },
+          contentType: "application/json",
+          dataType: "json"
+      }); 
+      }
+  })
+})
     
 
 

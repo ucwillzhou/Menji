@@ -64,7 +64,7 @@
         <ul class="navbar-nav flex-row align-items-center">
 
           <li class="nav-item d-block">
-            <a class="nav-link" href="../register.html"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+            <a class="nav-link register-button"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
               <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
             </svg></a>
           </li>
@@ -104,7 +104,7 @@
           </select>
 
           <select class="form-select length-select form-select-lg mb-3 border border-dark length-holder"  style="height:45px; width:120px" aria-label=".form-select-lg example">
-            <option class="length-sizes" selected>Length Size</option>
+            <option class="length-sizes" selected>Select Size</option>
           </select>
 
 
@@ -194,37 +194,66 @@ $(".add-to-cart").click(function(){
 
   let getToken = localStorage.getItem("token")
 
-  if(getToken == null){
+  if(getToken == null) {
     alert("SIGN IN FIRST")
   }
   else{
-    var button = $(this)
-  button.addClass("add-button-anim")
+
+    //works for tops, shoes, belt, jewelry
+    let itemID = $(".product-picture").children("img").attr("id")
+    let itemSize = $(".not-bottom-select option:selected").text().toLowerCase()
+    let itemType = $(".product-picture").children("img").attr("type")
+
+    if (itemSize == "select size") {
+      alert("PICK A SIZE")
+    }
+    else {
+
+      if(itemType == "tops" || itemType == "formalshoe" || itemType == "sneaker" || itemType == "boot" || itemType == "belt" || itemType == "jewelry"){
+        localStorage.setItem(itemID, itemSize)
+        cartAnim()
+      }
+      else if(itemType == "wallet"){
+        localStorage.setItem(itemID, itemID)
+        cartAnim()
+      }
+      else{
+
+        let waistSize = $(".waist-select option:selected").text().substring(1)
+        let lengthSize = $(".length-select option:selected").text().substring(1)
+
+        if (lengthSize == "elect Size") {
+          alert("PICK A SIZE")
+        }
+        else {
+          let bottomsObject = {"waist": waistSize, "length":lengthSize}
+          localStorage.setItem(itemID, JSON.stringify(bottomsObject))
+          cartAnim()
+        }
+
+      }
+
+    }
+    
+  }
+})
+
+function cartAnim() {
+  $(".add-to-cart").addClass("add-button-anim")
   $(".cart").addClass("add-cart-anim")
-  setTimeout(function() {
-    button.removeClass("add-button-anim")
-    $(".cart").removeClass("add-cart-anim")
-  },2000)
+    setTimeout(function() {
+      $(".add-to-cart").removeClass("add-button-anim")
+      $(".cart").removeClass("add-cart-anim")
+    },2000)
+}
 
-  //works for tops, shoes, belt, jewelry
-  let itemID = $(".product-picture").children("img").attr("id")
-  let itemSize = $(".not-bottom-select option:selected").text().toLowerCase()
-  let itemType = $(".product-picture").children("img").attr("type")
 
-  if(itemType == "tops" || itemType == "formalshoe" || itemType == "sneaker" || itemType == "boot" || itemType == "belt" || itemType == "jewelry"){
-    localStorage.setItem(itemID, itemSize)
-  }
-  else if(itemType == "wallet"){
-    localStorage.setItem(itemID, itemID)
-  }
-  else{
-    let waistSize = $(".waist-select option:selected").text().substring(1)
-    let lengthSize = $(".length-select option:selected").text().substring(1)
-
-    let bottomsObject = {"waist": waistSize, "length":lengthSize}
-    localStorage.setItem(itemID, JSON.stringify(bottomsObject))
-
-  }
+let token = localStorage.getItem("token")
+$(".register-button").click(function(){
+  if(token == null){
+    window.location.href = "../register.html"
+  } else {
+    window.location.href = "../orderhistory.html"
   }
 })
 

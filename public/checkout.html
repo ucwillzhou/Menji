@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menji</title>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="menji.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+</head>
+
+<body class="body bh">
+  <nav class="navbar border-bottom border-dark navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+      <a class="navbar-brand font-weight-bold" href="menji.html">MENJI.</a>
+  </nav>
+
+<div class="row">
+  <div class="col-8 col-xl-8 col-lg-8 col-md-12 col-12 p-4">
+    <div class="row pb-4">
+        <div class="col-12 p-3">
+            <div class="d-flex justify-content-around">
+                <button type="button" class="btn btn-outline-dark col-5 active delivery-button">DELIVERY</button>
+                <button type="button" class="btn btn-outline-dark col-5 pickup-button">PICK UP</button>
+            </div>
+        </div>
+
+        <div class="col-12 pt-3 border border-secondary delivery-order">
+            <form class="create-block register row g-2 p-3">
+                <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                    <label for="validationDefault01" class="form-label font-weight-bold">FIRST NAME</label>
+                    <input type="text" class="form-control text-capitalize">
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                <label class="form-label font-weight-bold">LAST NAME</label>
+                <input type="text" class="form-control text-capitalize">
+                </div>
+                
+                <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                    <label class="form-label font-weight-bold">ADDRESS</label>
+                    <input type="text" class="form-control text-capitalize">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label font-weight-bold">CITY</label>
+                    <input type="text" class="form-control text-capitalize">
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                    <label class="form-label font-weight-bold">PROVINCE</label>
+                    <input type="text" class="form-control text-capitalize">
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                    <label class="form-label font-weight-bold">POSTAL CODE</label>
+                    <input type="text" class="form-control text-uppercase" placeholder="T4C-7B9" maxlength="7">
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                    <label class="form-label font-weight-bold">PHONE NUMBER</label>
+                    <input type="tel" class="form-control" placeholder="123-456-789" pattern="[0-9]{3} [0-9]{3} [0-9]{3}" maxlength="12">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div class="row pt-3 border border-secondary payment-order">
+        <form class="create-block register row g-2 p-3">
+            <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                <label for="validationDefault01" class="form-label font-weight-bold">CARD NUMBER</label>
+                <input type="text" class="form-control text-capitalize">
+            </div>          
+            <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                <label class="form-label font-weight-bold">NAME ON CARD</label>
+                <input type="text" class="form-control text-capitalize">
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                <label class="form-label font-weight-bold">EXPIRY DATE</label>
+                <input type="text" class="form-control text-capitalize" placeholder="MM/YY" maxlength="5">
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                <label class="form-label font-weight-bold">CVV</label>
+                <input type="text" class="form-control text-uppercase" placeholder="000" maxlength="3">
+            </div>
+            <div class="col-12 pt-3">
+                <button type="button" class="btn btn-dark btn-block">SUBMIT</button>
+            </div>
+            
+        </form>
+    </div>
+    
+
+  </div>
+
+  <div class="col-4 col-xl-4 col-lg-4 col-md-12 col-12 pop-up-inventory pt-5">
+    <h3 class="pb-2">ORDER SUMMARY</h3>
+    <div class="order-summary border border-secondary d-flex list-group-item mb-3 row shadow">
+
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+<script>
+
+
+
+    let cartItems = localStorage
+    let tax = 0
+    let total = 0
+
+    $.ajax({
+    type: "GET",
+    url: "/menji/inventory",
+    success: function(data){
+
+        let subTotal = 0;
+
+        for(let i = 0; i < cartItems.length; i++){
+            let itemId = cartItems.key(i)
+            let itemSize = cartItems.getItem(itemId)
+            let waist;
+            let length;
+            
+
+            //console.log("Id: " + itemId)
+
+            if(itemSize.includes("waist")){
+                let bottomObject = JSON.parse(itemSize)
+                waist = bottomObject.waist;
+                length = bottomObject.length;
+                //console.log("W: " + waist + " " + "L: " + length)
+                itemSize = "W" + waist + "-L" + length 
+            }
+
+
+            for(let j = 0; j < data.length; j++){
+                
+                if(data[j]._id == itemId){
+                    console.log("CART ITEM " + data[j].name)
+                    subTotal += data[j].price
+
+                    $(".pop-up-inventory").append($("<div class='d-flex justify-content-center list-group-item mb-3 row shadow' id='"+ j +"'></div>")
+                    .append($("<div class='col-6 col-md-4 col-xl-4 col-lg-4 col-xxl-5'></div>")
+                    .append("<img src='../media/" + data[j].image +"' alt='Product Image' class='card-img-top'>"))
+                    .append($("<div class='row col-6 col-xl-8 col-lg-8 col-xxl-6 mt-4'></div>")
+                    .append("<p class='px-1 mb-2'>Item: " + data[j].name +"</p>")
+                    .append("<p class='px-1 mb-2'>Size: " + itemSize +"</p>")
+                    .append("<p class='px-1 mb-2'>Price: $"+ data[j].price + ".00" + "</p>"))
+                    )
+                }
+            }
+
+        }
+
+        
+        let tax = (subTotal * 0.05).toFixed(2);
+        let total = (parseFloat(subTotal) + parseFloat(tax)).toFixed(2)
+
+        if(cartItems.length == 0){
+            $(".order-summary").append("<p class='sub-total checkout-text'>"+ cartItems.length+ " Item: CAD $" + subTotal.toFixed(2) +"</p>")
+        }
+        else{
+            $(".order-summary").append("<p class='sub-total checkout-text'>"+ cartItems.length+ " Items: CAD $" + subTotal.toFixed(2) +"</p>")
+        }
+        
+        $(".sub-total").after($("<p class='checkout-text'>Tax: CAD $"+ tax +" </p>").append("<hr class='line'></hr>")
+        .append("<p class='total checkout-text check-out-button-place'>Total: CAD $"+ total + "</p>"))
+            
+
+    }
+    })
+    
+    $(".delivery-button").click(function() {
+        $(".pickup-button").attr("class", "btn btn-outline-dark shadow-none col-5 pickup-button")
+        $(".delivery-button").attr("class", "btn btn-outline-dark shadow-none col-5 delivery-button active")
+        $(".delivery-order").show()
+    })
+    
+
+    $(".pickup-button").click(function(){
+        $(".delivery-order").hide()
+        $(".pickup-button").attr("class", "btn btn-outline-dark col-5 shadow-none pickup-button active")
+        $(".delivery-button").attr("class", "btn btn-outline-dark col-5 shadow-none delivery-button")
+    })
+
+
+
+</script>
+
+
+
+</body>
+</html>
