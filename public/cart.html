@@ -169,7 +169,7 @@ $.ajax({
     let tax = (subTotal * 0.05).toFixed(2);
     let total = (parseFloat(subTotal) + parseFloat(tax)).toFixed(2)
 
-    if(cartItems.length == 1){
+    if(cartItems.length <= 1){
       $(".order-summary").after("<p class='sub-total checkout-text'>"+ 0 + " Item: CAD $" + subTotal.toFixed(2) +"</p>")
     }
     else{
@@ -182,7 +182,7 @@ $.ajax({
     
     $(document).ready(function(){
       
-      if(cartItems.length == 1){
+      if(cartItems.length <= 1){
         $(".checkout-button").hide()
       } else {
         $(".checkout-button").show()

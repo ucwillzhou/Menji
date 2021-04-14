@@ -12,6 +12,15 @@ router.get("/inventory", async (req, res) => {
   }
 });
 
+router.get("/inventory/:_id", async (req, res) => {
+  try {
+    const item = await Product.findById(req.params._id);
+    res.json(item);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
 router.get("/sign_in", (req, res) => {
   res.send("Sign In Page");
 });
@@ -26,6 +35,15 @@ router.get("/accounts", async (req, res) => {
   }
 });
 
+router.get("/accounts/:_id", async (req, res) => {
+  try {
+    const account = await Account.findById(req.params._id);
+    res.json(account);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
 router.get("/checkout", (req, res) => {
   res.send("Check out Page");
 });
@@ -35,14 +53,31 @@ router.get("/cart", (req, res) => {
 });
 
 //update add post PUT orders to accounts!!!!!!!!!!!!!
-
+router.patch("/:_id", async (req, res) => {
+  try {
+    const appendOrder = await Account.updateOne(
+      { _id: req.params._id },
+      {
+        $push: {
+          orders: [
+            {
+              address: req.body.orders[0].address,
+              phone: req.body.orders[0].phone,
+              cardNumber: req.body.orders[0].cardNumber,
+              items: req.body.orders[0].items,
+            },
+          ],
+        },
+      }
+    );
+    res.json(appendOrder);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
 //get orders
 
 router.post("/register_user", async (req, res) => {
-  console.log("First Name: " + req.body.first_name);
-  console.log("Last Name: " + req.body.last_name);
-  console.log("Email: " + req.body.email);
-  console.log("Password: " + req.body.password);
   //send to database
   const post = new Account({
     first_name: req.body.first_name,

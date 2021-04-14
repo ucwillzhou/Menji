@@ -138,9 +138,9 @@ $.ajax({
   url: "/menji/accounts",
   success: function(data){
     for(let i = 0; i < data.length; i++){
-      $(".pop-up-users").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 shadow-sm'></div>")
-        .append("<p class='px-5 col-1 col-md-6 col-lg-6 col-xl-6'>Name: " + data[i].first_name + " " + data[i].last_name + " </p>")
-        .append("<p class='px-5 col-1 col-md-6 col-lg-6 col-xl-6'>Email: " + data[i].email))
+      $(".pop-up-users").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 shadow-sm ml-1'></div>")
+        .append("<p class='px-5 col-6 col-md-6 col-lg-6 col-xl-6'>Name: " + data[i].first_name + " " + data[i].last_name + " </p>")
+        .append("<p class='px-5 col-6 col-md-6 col-lg-6 col-xl-6'>Email: " + data[i].email))
 
     }
   }
@@ -151,7 +151,7 @@ $.ajax({
   url: "/menji/inventory",
   success: function(data){
     for(let i = 0; i < data.length; i++){
-      $(".pop-up-inventory").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 row shadow' id='"+ i +"'></div>")
+      $(".pop-up-inventory").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 row shadow ml-2' id='"+ i +"'></div>")
       .append($("<div class='col-6 col-xl-3 col-lg-3'></div>")
       .append("<img src='../media/" + data[i].image +"' alt='Product Image' class='card-img-top'>"))
       .append($("<div class='col-6 col-xl-7 col-xl-7 mt-4'></div>")
@@ -178,7 +178,7 @@ $.ajax({
 
 
 $(".pop-up-inventory").hide()
-//$(".button-add").hide()
+$(".button-add").hide()
 
 $(".vertical-text").click(function(){
     let currentCategory = $(this).text()
@@ -520,7 +520,6 @@ $(".modal-submit").click(function(){
         })
       }))))
     }}})
-
 })
 
 

@@ -40,23 +40,23 @@
                 
                 <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
                     <label class="form-label font-weight-bold">ADDRESS</label>
-                    <input type="text" class="form-control text-capitalize">
+                    <input type="text" class="form-control text-capitalize address-input">
                 </div>
                 <div class="col-md-12 mb-3">
                     <label class="form-label font-weight-bold">CITY</label>
-                    <input type="text" class="form-control text-capitalize">
+                    <input type="text" class="form-control text-capitalize city-input">
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                     <label class="form-label font-weight-bold">PROVINCE</label>
-                    <input type="text" class="form-control text-capitalize">
+                    <input type="text" class="form-control text-capitalize province-input">
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                     <label class="form-label font-weight-bold">POSTAL CODE</label>
-                    <input type="text" class="form-control text-uppercase" placeholder="T4C-7B9" maxlength="7">
+                    <input type="text" class="form-control text-uppercase postal-input" placeholder="T4C-7B9" maxlength="7">
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
                     <label class="form-label font-weight-bold">PHONE NUMBER</label>
-                    <input type="tel" class="form-control" placeholder="123-456-789" pattern="[0-9]{3} [0-9]{3} [0-9]{3}" maxlength="12">
+                    <input type="tel" class="form-control phone-input" placeholder="123-456-7890" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12">
                 </div>
             </form>
         </div>
@@ -67,7 +67,7 @@
         <form class="create-block register row g-2 p-3">
             <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
                 <label for="validationDefault01" class="form-label font-weight-bold">CARD NUMBER</label>
-                <input type="text" class="form-control text-capitalize">
+                <input type="text" class="form-control text-capitalize card-input">
             </div>          
             <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
                 <label class="form-label font-weight-bold">NAME ON CARD</label>
@@ -82,7 +82,7 @@
                 <input type="text" class="form-control text-uppercase" placeholder="000" maxlength="3">
             </div>
             <div class="col-12 pt-3">
-                <button type="button" class="btn btn-dark btn-block">SUBMIT</button>
+                <button type="button" class="btn btn-dark btn-block submit-button">SUBMIT</button>
             </div>
             
         </form>
@@ -93,7 +93,7 @@
 
   <div class="col-4 col-xl-4 col-lg-4 col-md-12 col-12 pop-up-inventory pt-5">
     <h3 class="pb-2">ORDER SUMMARY</h3>
-    <div class="order-summary border border-secondary d-flex list-group-item mb-3 row shadow">
+    <div class="order-summary border border-secondary list-group-item mb-3 row shadow">
 
     </div>
   </div>
@@ -108,86 +108,138 @@
 
 
 
-    let cartItems = localStorage
-    let tax = 0
-    let total = 0
+let cartItems = localStorage
+let tax = 0
+let total = 0
 
-    $.ajax({
-    type: "GET",
-    url: "/menji/inventory",
-    success: function(data){
+$.ajax({
+type: "GET",
+url: "/menji/inventory",
+success: function(data){
 
-        let subTotal = 0;
+    let subTotal = 0;
 
-        for(let i = 0; i < cartItems.length; i++){
-            let itemId = cartItems.key(i)
-            let itemSize = cartItems.getItem(itemId)
-            let waist;
-            let length;
-            
-
-            //console.log("Id: " + itemId)
-
-            if(itemSize.includes("waist")){
-                let bottomObject = JSON.parse(itemSize)
-                waist = bottomObject.waist;
-                length = bottomObject.length;
-                //console.log("W: " + waist + " " + "L: " + length)
-                itemSize = "W" + waist + "-L" + length 
-            }
-
-
-            for(let j = 0; j < data.length; j++){
-                
-                if(data[j]._id == itemId){
-                    console.log("CART ITEM " + data[j].name)
-                    subTotal += data[j].price
-
-                    $(".pop-up-inventory").append($("<div class='d-flex justify-content-center list-group-item mb-3 row shadow' id='"+ j +"'></div>")
-                    .append($("<div class='col-6 col-md-4 col-xl-4 col-lg-4 col-xxl-5'></div>")
-                    .append("<img src='../media/" + data[j].image +"' alt='Product Image' class='card-img-top'>"))
-                    .append($("<div class='row col-6 col-xl-8 col-lg-8 col-xxl-6 mt-4'></div>")
-                    .append("<p class='px-1 mb-2'>Item: " + data[j].name +"</p>")
-                    .append("<p class='px-1 mb-2'>Size: " + itemSize +"</p>")
-                    .append("<p class='px-1 mb-2'>Price: $"+ data[j].price + ".00" + "</p>"))
-                    )
-                }
-            }
-
-        }
-
+    for(let i = 0; i < cartItems.length; i++){
+        let itemId = cartItems.key(i)
+        let itemSize = cartItems.getItem(itemId)
+        let waist;
+        let length;
         
-        let tax = (subTotal * 0.05).toFixed(2);
-        let total = (parseFloat(subTotal) + parseFloat(tax)).toFixed(2)
 
-        if(cartItems.length == 0){
-            $(".order-summary").append("<p class='sub-total checkout-text'>"+ cartItems.length+ " Item: CAD $" + subTotal.toFixed(2) +"</p>")
+        //console.log("Id: " + itemId)
+
+        if(itemSize.includes("waist")){
+            let bottomObject = JSON.parse(itemSize)
+            waist = bottomObject.waist;
+            length = bottomObject.length;
+            //console.log("W: " + waist + " " + "L: " + length)
+            itemSize = "W" + waist + "-L" + length 
         }
-        else{
-            $(".order-summary").append("<p class='sub-total checkout-text'>"+ cartItems.length+ " Items: CAD $" + subTotal.toFixed(2) +"</p>")
-        }
-        
-        $(".sub-total").after($("<p class='checkout-text'>Tax: CAD $"+ tax +" </p>").append("<hr class='line'></hr>")
-        .append("<p class='total checkout-text check-out-button-place'>Total: CAD $"+ total + "</p>"))
+
+
+        for(let j = 0; j < data.length; j++){
             
+            if(data[j]._id == itemId){
+                subTotal += data[j].price
+
+                $(".pop-up-inventory").append($("<div class='d-flex justify-content-center list-group-item mb-3 row shadow' id='"+ j +"'></div>")
+                .append($("<div class='col-6 col-md-4 col-xl-4 col-lg-4 col-xxl-5'></div>")
+                .append("<img src='../media/" + data[j].image +"' alt='Product Image' class='card-img-top'>"))
+                .append($("<div class='col-6 col-xl-8 col-lg-8 col-xxl-6 mt-4'></div>")
+                .append("<p class='px-1 mb-2'>Item: " + data[j].name +"</p>")
+                .append("<p class='px-1 mb-2'>Size: " + itemSize +"</p>")
+                .append("<p class='px-1 mb-2'>Price: $"+ data[j].price + ".00" + "</p>"))
+                )
+            }
+        }
 
     }
-    })
+
     
-    $(".delivery-button").click(function() {
-        $(".pickup-button").attr("class", "btn btn-outline-dark shadow-none col-5 pickup-button")
-        $(".delivery-button").attr("class", "btn btn-outline-dark shadow-none col-5 delivery-button active")
-        $(".delivery-order").show()
-    })
+    let tax = (subTotal * 0.05).toFixed(2);
+    let total = (parseFloat(subTotal) + parseFloat(tax)).toFixed(2)
+
+    if(cartItems.length <= 1){
+        $(".order-summary").append("<p class='sub-total checkout-text'>"+ cartItems.length+ " Item: CAD $" + subTotal.toFixed(2) +"</p>")
+    }
+    else{
+        $(".order-summary").append("<p class='sub-total checkout-text'>"+ (cartItems.length-1) + " Items: CAD $" + subTotal.toFixed(2) +"</p>")
+    }
     
+    $(".sub-total").after($("<p class='checkout-text'>Tax: CAD $"+ tax +" </p>").append("<hr class='line'></hr>")
+    .append("<p class='total checkout-text check-out-button-place'>Total: CAD $"+ total + "</p>"))
+        
 
-    $(".pickup-button").click(function(){
-        $(".delivery-order").hide()
-        $(".pickup-button").attr("class", "btn btn-outline-dark col-5 shadow-none pickup-button active")
-        $(".delivery-button").attr("class", "btn btn-outline-dark col-5 shadow-none delivery-button")
-    })
+}
+})
+
+$(".delivery-button").click(function() {
+    $(".pickup-button").attr("class", "btn btn-outline-dark shadow-none col-5 pickup-button")
+    $(".delivery-button").attr("class", "btn btn-outline-dark shadow-none col-5 delivery-button active")
+    $(".delivery-order").show()
+})
 
 
+$(".pickup-button").click(function() {
+    $(".delivery-order").hide()
+    $(".pickup-button").attr("class", "btn btn-outline-dark col-5 shadow-none pickup-button active")
+    $(".delivery-button").attr("class", "btn btn-outline-dark col-5 shadow-none delivery-button")
+})
+
+$(".submit-button").click(function(){
+    let address = $(".address-input").val()
+    let city =$(".city-input").val()
+    let prov = $(".province-input").val()
+    let postal = $(".postal-input").val()
+
+    let entireAddress = (address + ", " + city  + " " + prov + ", " + postal).toString()
+    let phone = $(".phone-input").val()
+    let card = $(".card-input").val()
+
+    let userId = localStorage.getItem("token")
+    let items = []
+
+    for (let i = 0; i < localStorage.length; i++) {
+        let item = {"itemId":localStorage.key(i)}
+        if (localStorage.key(i) != "token"){
+            items.push(item)
+        }
+    }
+
+
+    for (var item in localStorage) {
+        if (item != "token"){
+            console.log("ITEM "+ item)
+            localStorage.removeItem(item)
+        }
+    }
+
+    $.ajax({
+        type: "PATCH",
+        url: "/menji/" + userId,
+        data: JSON.stringify({
+            "orders": [
+            {
+            "address": entireAddress,
+            "phone": phone,
+            "cardNumber": card,
+            "items": items,
+            }
+        ]
+        }),
+        success: function(data) {
+            
+            window.location.href = "orderhistory.html"
+
+        },
+        error: function(error){
+        console.log(error)
+        },
+        contentType: "application/json",
+        dataType: "json"
+    });
+
+})
 
 </script>
 

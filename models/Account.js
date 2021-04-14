@@ -19,7 +19,10 @@ const AccountSchema = mongoose.Schema({
   },
   orders: [
     {
-      order: [
+      address: { type: String },
+      phone: { type: Number },
+      cardNumber: { type: Number, required: true },
+      items: [
         {
           itemId: { type: String },
           _id: false,
@@ -28,5 +31,5 @@ const AccountSchema = mongoose.Schema({
     },
   ],
 });
-//SCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM ON DEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
 module.exports = mongoose.model("Accounts", AccountSchema);

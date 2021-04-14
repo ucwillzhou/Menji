@@ -204,7 +204,7 @@ $(".add-to-cart").click(function(){
     let itemSize = $(".not-bottom-select option:selected").text().toLowerCase()
     let itemType = $(".product-picture").children("img").attr("type")
 
-    if (itemSize == "select size") {
+    if (itemSize == "select size" && itemType != "wallet") {
       alert("PICK A SIZE")
     }
     else {

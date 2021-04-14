@@ -73,11 +73,22 @@
             <a class="nav-link" href="cart.html"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
               <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
             </svg></a>
+
+            <li class="nav-item">
+              <a class="nav-link logout"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+              </svg></a>
+            </li>
           </li>
         </ul>
       </div>
-
   </nav>
+
+  <div class="row orders list-group justify-content-center col-12 ml-2">
+    <h1 class="py-5 text-center">Order History</h1>
+  </div>
+
+
 
 </body>
 
@@ -85,6 +96,56 @@
 
 <script>
 
+let userId = localStorage.getItem("token")
+
+
+$.ajax({
+  type: "GET",
+  url: "menji/accounts/" + userId,
+  async: true,
+  success: function(data){
+    
+    for(let i = 0; i < data.orders.length; i++){
+
+      $(".orders").append("<div class='col-lg-8 col-md-9 col-sm-10 align-self-center list-group-item row shadow mb-5' id='"+ i +"'></div>")
+      for(let j = 0; j < data.orders[i].items.length; j++){
+        let itemId = data.orders[i].items[j].itemId
+
+        draw(itemId, i)
+        
+      }
+    }
+
+  },
+  error: function(error){
+    console.log(error)
+  }
+})
+
+function draw(itemId, i){
+  $.ajax({
+    type: "GET",
+    url: "/menji/inventory/" + itemId,
+    success: function(data){
+
+      $("#"+ i +"").append($("<div class='row py-4 align-middle'></div>")
+        .append($("<div class='col-6 col-xl-3 col-lg-3'></div>")
+          .append("<img src='../media/"+ data.image +"' alt='Product Image' class='card-img-top'>"))
+        .append($("<div class='col-6 col-xl-7 col-xl-7'></div>")
+          .append("<p class='px-1 '>Item: " + data.name +"</p>")
+          .append("<p class='px-1 '>Serial Number: " + data.serial_no +"</p>")
+          .append("<p class='px-1 '>Price: $" + data.price + ".00" +"</p>")))
+
+
+    }
+  })
+}
+
+
+$(".logout").click(function() {
+  localStorage.clear()
+  window.location.href = "menji.html"
+})
 
 </script>
 
