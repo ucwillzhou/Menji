@@ -19,12 +19,11 @@
   </nav>
 
 
-  <!--  <div class="items row-cols-md-3 g-2">-->
-
     <div class="row">
       <nav class="nav d-flex flex-w flex-sm-column navbar-light border-right border-dark bg-white p-3">
-        <a class="nav-link active fs text-secondary vertical-text" href="#">CUSTOMERS</a>
-        <a class="nav-link fs text-secondary vertical-text" href="#">INVENTORY</a>
+        <a class="nav-link fs text-dark vertical-text" href="#">CUSTOMERS</a>
+        <a class="nav-link fs text-dark vertical-text" href="#">INVENTORY</a>
+        <a class="nav-link fs text-dark vertical-text" href="#">ALL ORDERS</a>
       </nav>
   
       <div class="inline-display col-xl-9 col-lg-9 mt-5 fs">
@@ -33,8 +32,6 @@
           <div class="vert-title col-5 col-sm-7 col-md-8 col-lg-8 col-xl-9 col-xxl-10 fs">CUSTOMERS</div>
           <div class="button-add col-6 col-sm-4 col-md-4 col-lg-4 col-xl-3">
             <button type="button" class="btn btn-secondary text-nowrap add-button btn-block" data-bs-toggle="modal"  data-bs-target="#exampleModal">ADD</button>
-
-
             <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -93,7 +90,6 @@
                         </div>
                       </div>
 
-
                     </form>
 
                   </div>
@@ -108,24 +104,25 @@
         </div>
 
 
-
-
         <div class="pop-up-users list-group p-2 fs-2"></div>
         <div class="pop-up-inventory list-group p-4 fs-2" id="pop-up-inventory-reload"></div>
-
+        <div class="pop-up-orders text-align-center list-group p-4 fs-2" id="pop-up-orders-reload"></div>
       </div>
 
     </div>
 
-  <div class="page-container"></div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white footer">
+    <div class="footer-spacing"></div>
+
+    <footer class="page-footer font-small unique-color-dark pt-5">
       <div class="container-fluid">
-        <span class="navbar-brand mb-0">CONTACT</span>
-        <span class="navbar-brand mb-0">&#169 2021 MENJI. ALL RIGHTS RESERVED</span>
-        <span class="navbar-brand mb-0 font-weight-bold">MENJI.</span>
+        <ul class="list-unstyled list-inline text-center  border-top border-dark py-2">
+          <li class="list-inline-item">
+            <h5 class="pt-5 mb-1">MENJI</h5>
+          </li>
+        </ul>
       </div>
-    </nav>
-  </div>
+      <div class="footer-copyright text-center py-3">&#169 2021 MENJI. ALL RIGHTS RESERVED</div>
+    </footer>
 
 
 </body>
@@ -137,10 +134,20 @@ $.ajax({
   type: "GET",
   url: "/menji/accounts",
   success: function(data){
+
+    console.log(data)
     for(let i = 0; i < data.length; i++){
-      $(".pop-up-users").append($("<div class='d-flex w-100 justify-content-start list-group-item mb-3 shadow-sm ml-1'></div>")
-        .append("<p class='px-5 col-6 col-md-6 col-lg-6 col-xl-6'>Name: " + data[i].first_name + " " + data[i].last_name + " </p>")
-        .append("<p class='px-5 col-6 col-md-6 col-lg-6 col-xl-6'>Email: " + data[i].email))
+      $(".pop-up-users").append($("<div class='d-flex flex-wrap w-100 justify-content-start list-group-item mb-3 shadow-sm ml-1'></div>")
+        .append("<p class='col-12 col-md-6 col-lg-6 col-xl-6 pt-2 fs-2'>Name: " + data[i].first_name + " " + data[i].last_name + " </p>")
+        .append("<p class='col-12 col-md-6 col-lg-6 col-xl-6 fs-2'>Email: " + data[i].email))
+      for(j = 0; j < data[i].orders.length; j++){
+        let orderId = data[i].orders[j]._id
+        $(".pop-up-orders").append("<div class='col-lg-8 col-md-9 col-sm-10 align-self-center list-group-item row shadow mb-5' id='order-"+ i + "-" + j +"'>Order ID: "+ orderId +"</div>")
+        for(k = 0; k < data[i].orders[j].items.length; k++){
+          let item = data[i].orders[j].items[k].itemId
+          draw(item, i, j)
+        }        
+      }
 
     }
   }
@@ -177,6 +184,7 @@ $.ajax({
 })
 
 
+$(".pop-up-orders").hide()
 $(".pop-up-inventory").hide()
 $(".button-add").hide()
 
@@ -187,22 +195,25 @@ $(".vertical-text").click(function(){
     if(currentCategory == "CUSTOMERS"){
       $(".pop-up-users").show()
       $(".pop-up-inventory").hide()
-      $(".button-add").hide()
-    }
-
-    if(currentCategory == "ORDERS"){
-      $(".pop-up-orders").show()
-      $(".pop-up-inventory").hide()
+      $(".pop-up-orders").hide()
       $(".button-add").hide()
     }
 
     if(currentCategory == "INVENTORY"){
       $(".pop-up-users").hide()
+      $(".pop-up-orders").hide()
       $(".pop-up-inventory").show()
       $(".button-add").show()
     }
+
+    if(currentCategory == "ALL ORDERS"){
+      $(".pop-up-orders").show()
+      $(".pop-up-users").hide()
+      $(".pop-up-inventory").hide()
+      $(".button-add").hide()
+    }
   })
-      
+  
 $(".modal-clear").click(function(){
   $(".form-clear").trigger("reset")
   $(".delete-holder").remove()
@@ -240,7 +251,7 @@ $(".modal-submit").click(function(){
         "serial_no": number,
         "name": name,
         "price": price,
-        "image": "widetemp.png",
+        "image": image,
         "material": material,
         "color": color,
         "tops": [{
@@ -292,7 +303,7 @@ $(".modal-submit").click(function(){
           "serial_no": number,
           "name": name,
           "price": price,
-          "image": "widetemp.png",
+          "image": image,
           "material": material,
           "color": color,
           "bottoms": [{
@@ -330,7 +341,7 @@ $(".modal-submit").click(function(){
           "serial_no": number,
           "name": name,
           "price": price,
-          "image": "widetemp.png",
+          "image": image,
           "material": material,
           "color": color,
           "formalshoe": [{
@@ -354,7 +365,7 @@ $(".modal-submit").click(function(){
           "serial_no": number,
           "name": name,
           "price": price,
-          "image": "widetemp.png",
+          "image": image,
           "material": material,
           "color": color,
           "sneaker": [{
@@ -377,7 +388,7 @@ $(".modal-submit").click(function(){
           "serial_no": number,
           "name": name,
           "price": price,
-          "image": "widetemp.png",
+          "image": image,
           "material": material,
           "color": color,
           "boot": [{
@@ -410,7 +421,7 @@ $(".modal-submit").click(function(){
           "serial_no": number,
           "name": name,
           "price": price,
-          "image": "widetemp.png",
+          "image": image,
           "material": material,
           "color": color,
           "jewelry": [{
@@ -437,7 +448,7 @@ $(".modal-submit").click(function(){
           "serial_no": number,
           "name": name,
           "price": price,
-          "image": "widetemp.png",
+          "image": image,
           "material": material,
           "color": color,
           "wallet": [{
@@ -468,7 +479,7 @@ $(".modal-submit").click(function(){
           "serial_no": number,
           "name": name,
           "price": price,
-          "image": "widetemp.png",
+          "image": image,
           "material": material,
           "color": color,
           "belt": [{
@@ -676,6 +687,26 @@ function addBottoms(){
 $("#button-addon1").click(function(){
   addBottoms()
 })
+
+function draw(item, i, j) {
+  
+  $.ajax({
+    type: "GET",
+    url: "/menji/inventory/" + item,
+    success: function(data){
+
+      $("#order-"+ i + "-" + j +"").append($("<div class='row pl-3 py-4 align-middle'></div>")
+        .append($("<div class='col-6 col-xl-4 col-lg-5'></div>")
+          .append("<img src='../media/"+ data.image +"' alt='Product Image' class='card-img-top'>"))
+        .append($("<div class='col-6 col-xl-7 col-lg-7'></div>")
+          .append("<p class='px-1 '>Item: " + data.name +"</p>")
+          .append("<p class='px-1 '>Serial Number: " + data.serial_no +"</p>")
+          .append("<p class='px-1 '>Price: $" + data.price + ".00" +"</p>")))
+
+
+    }
+  })
+}
 
 </script>
 

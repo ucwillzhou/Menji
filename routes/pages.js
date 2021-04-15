@@ -3,6 +3,7 @@ const router = express.Router();
 const Account = require("../models/Account");
 const Product = require("../models/Product");
 
+//returns json of all items in the inventory
 router.get("/inventory", async (req, res) => {
   try {
     const products = await Product.find();
@@ -12,6 +13,7 @@ router.get("/inventory", async (req, res) => {
   }
 });
 
+//returns json of specfic item in the inventory
 router.get("/inventory/:_id", async (req, res) => {
   try {
     const item = await Product.findById(req.params._id);
@@ -21,11 +23,7 @@ router.get("/inventory/:_id", async (req, res) => {
   }
 });
 
-router.get("/sign_in", (req, res) => {
-  res.send("Sign In Page");
-});
-
-//send all registered accounts to this end point
+//returns json of all registered accounts
 router.get("/accounts", async (req, res) => {
   try {
     const posts = await Account.find();
@@ -35,6 +33,7 @@ router.get("/accounts", async (req, res) => {
   }
 });
 
+//returns json a specific account registered
 router.get("/accounts/:_id", async (req, res) => {
   try {
     const account = await Account.findById(req.params._id);
@@ -44,15 +43,7 @@ router.get("/accounts/:_id", async (req, res) => {
   }
 });
 
-router.get("/checkout", (req, res) => {
-  res.send("Check out Page");
-});
-
-router.get("/cart", (req, res) => {
-  res.send("Cart Page");
-});
-
-//update add post PUT orders to accounts!!!!!!!!!!!!!
+//update an account's orders
 router.patch("/:_id", async (req, res) => {
   try {
     const appendOrder = await Account.updateOne(
@@ -75,10 +66,9 @@ router.patch("/:_id", async (req, res) => {
     res.json({ message: err });
   }
 });
-//get orders
 
+//register a new user and post to database
 router.post("/register_user", async (req, res) => {
-  //send to database
   const post = new Account({
     first_name: req.body.first_name,
     last_name: req.body.last_name,
@@ -96,10 +86,8 @@ router.post("/register_user", async (req, res) => {
   res.end();
 });
 
+//login - retrieve user from database, if they exist
 router.post("/login_user", async (req, res) => {
-  console.log("SIGN IN EMAIL: " + req.body.email);
-  console.log("SIGN IN PASSWORD: " + req.body.password);
-
   try {
     const posts = await Account.findOne({
       email: req.body.email,
@@ -111,7 +99,7 @@ router.post("/login_user", async (req, res) => {
   }
 });
 
-// add item from db
+//add a new product to the database
 router.post("/products", async (req, res) => {
   //send to database
   const post = new Product({
@@ -139,10 +127,10 @@ router.post("/products", async (req, res) => {
   } catch (error) {
     res.json({ message: error });
   }
-
   res.end();
 });
 
+//delete item from database (admin)
 router.delete("/:_id", async (req, res) => {
   try {
     const removeProduct = await Product.deleteOne({ _id: req.params._id });

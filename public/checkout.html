@@ -17,95 +17,101 @@
       <a class="navbar-brand font-weight-bold" href="menji.html">MENJI.</a>
   </nav>
 
-<div class="row">
-  <div class="col-8 col-xl-8 col-lg-8 col-md-12 col-12 p-4">
-    <div class="row pb-4">
-        <div class="col-12 p-3">
-            <div class="d-flex justify-content-around">
-                <button type="button" class="btn btn-outline-dark col-5 active delivery-button">DELIVERY</button>
-                <button type="button" class="btn btn-outline-dark col-5 pickup-button">PICK UP</button>
+    <div class="row">
+    <div class="col-8 col-xl-8 col-lg-8 col-md-12 col-12 p-4">
+        <div class="row pb-4">
+            <div class="col-12 p-3">
+                <div class="d-flex justify-content-around">
+                    <button type="button" class="btn btn-outline-dark col-5 active delivery-button">DELIVERY</button>
+                    <button type="button" class="btn btn-outline-dark col-5 pickup-button">PICK UP</button>
+                </div>
+            </div>
+
+            <div class="col-12 pt-3 border border-secondary delivery-order">
+                <form class="create-block register row g-2 p-3">
+                    <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                        <label for="validationDefault01" class="form-label font-weight-bold">FIRST NAME</label>
+                        <input type="text" class="form-control text-capitalize">
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                    <label class="form-label font-weight-bold">LAST NAME</label>
+                    <input type="text" class="form-control text-capitalize">
+                    </div>
+                    
+                    <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                        <label class="form-label font-weight-bold">ADDRESS</label>
+                        <input type="text" class="form-control text-capitalize address-input">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label font-weight-bold">CITY</label>
+                        <input type="text" class="form-control text-capitalize city-input">
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                        <label class="form-label font-weight-bold">PROVINCE</label>
+                        <input type="text" class="form-control text-capitalize province-input">
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                        <label class="form-label font-weight-bold">POSTAL CODE</label>
+                        <input type="text" class="form-control text-uppercase postal-input" placeholder="T4C-7B9" maxlength="7">
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                        <label class="form-label font-weight-bold">PHONE NUMBER</label>
+                        <input type="tel" class="form-control phone-input" placeholder="123-456-7890" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12">
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div class="col-12 pt-3 border border-secondary delivery-order">
+        
+        <div class="row pt-3 border border-secondary payment-order">
             <form class="create-block register row g-2 p-3">
-                <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
-                    <label for="validationDefault01" class="form-label font-weight-bold">FIRST NAME</label>
+                <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                    <label for="validationDefault01" class="form-label font-weight-bold">CARD NUMBER</label>
+                    <input type="text" class="form-control text-capitalize card-input">
+                </div>          
+                <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                    <label class="form-label font-weight-bold">NAME ON CARD</label>
                     <input type="text" class="form-control text-capitalize">
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
-                <label class="form-label font-weight-bold">LAST NAME</label>
-                <input type="text" class="form-control text-capitalize">
+                    <label class="form-label font-weight-bold">EXPIRY DATE</label>
+                    <input type="text" class="form-control text-capitalize" placeholder="MM/YY" maxlength="5">
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
+                    <label class="form-label font-weight-bold">CVV</label>
+                    <input type="text" class="form-control text-uppercase" placeholder="000" maxlength="3">
+                </div>
+                <div class="col-12 pt-3">
+                    <button type="button" class="btn btn-dark btn-block submit-button">SUBMIT</button>
                 </div>
                 
-                <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
-                    <label class="form-label font-weight-bold">ADDRESS</label>
-                    <input type="text" class="form-control text-capitalize address-input">
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label class="form-label font-weight-bold">CITY</label>
-                    <input type="text" class="form-control text-capitalize city-input">
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
-                    <label class="form-label font-weight-bold">PROVINCE</label>
-                    <input type="text" class="form-control text-capitalize province-input">
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
-                    <label class="form-label font-weight-bold">POSTAL CODE</label>
-                    <input type="text" class="form-control text-uppercase postal-input" placeholder="T4C-7B9" maxlength="7">
-                </div>
-                <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
-                    <label class="form-label font-weight-bold">PHONE NUMBER</label>
-                    <input type="tel" class="form-control phone-input" placeholder="123-456-7890" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12">
-                </div>
             </form>
         </div>
-    </div>
-
-    
-    <div class="row pt-3 border border-secondary payment-order">
-        <form class="create-block register row g-2 p-3">
-            <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
-                <label for="validationDefault01" class="form-label font-weight-bold">CARD NUMBER</label>
-                <input type="text" class="form-control text-capitalize card-input">
-            </div>          
-            <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
-                <label class="form-label font-weight-bold">NAME ON CARD</label>
-                <input type="text" class="form-control text-capitalize">
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
-                <label class="form-label font-weight-bold">EXPIRY DATE</label>
-                <input type="text" class="form-control text-capitalize" placeholder="MM/YY" maxlength="5">
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
-                <label class="form-label font-weight-bold">CVV</label>
-                <input type="text" class="form-control text-uppercase" placeholder="000" maxlength="3">
-            </div>
-            <div class="col-12 pt-3">
-                <button type="button" class="btn btn-dark btn-block submit-button">SUBMIT</button>
-            </div>
-            
-        </form>
-    </div>
     
 
   </div>
 
   <div class="col-4 col-xl-4 col-lg-4 col-md-12 col-12 pop-up-inventory pt-5">
     <h3 class="pb-2">ORDER SUMMARY</h3>
-    <div class="order-summary border border-secondary list-group-item mb-3 row shadow">
-
-    </div>
+    <div class="order-summary border border-secondary list-group-item mb-3 row shadow"></div>
   </div>
-
 
 </div>
 
 
 
+<footer class="page-footer font-small unique-color-dark pt-5">
+  <div class="container-fluid">
+    <ul class="list-unstyled list-inline text-center  border-top border-dark py-2">
+      <li class="list-inline-item">
+        <h5 class="pt-5 mb-1">MENJI</h5>
+      </li>
+    </ul>
+  </div>
+  <div class="footer-copyright text-center py-3">&#169 2021 MENJI. ALL RIGHTS RESERVED</div>
+</footer>
 
 <script>
-
 
 
 let cartItems = localStorage

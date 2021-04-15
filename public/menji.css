@@ -10,12 +10,29 @@
   margin-left: 10%;
 }
 
+.footer-spacing {
+  min-height: 40vh !important;
+}
+
+.nav-link {
+  color: black !important;
+}
+
 @media all {
   .navbar .nav-item .dropdown-menu {
     display: none;
   }
   .navbar .nav-item:hover .dropdown-menu {
     display: block;
+  }
+  .dropdown-menu {
+    margin-top: -0.25rem !important;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .navbar-nav {
+    padding-left: 15px !important;
   }
 }
 
@@ -69,21 +86,21 @@
 }
 
 .product-name {
-  font-size: 3vw !important;
+  font-size: calc(1rem + 1vw) !important;
 }
 
 .product-price {
-  font-size: 2.5vw !important;
+  font-size: calc(0.9rem + 0.9vw) !important;
 }
 
 .product-color-text,
 .product-material {
-  font-size: 1vw !important;
+  font-size: calc(0.7rem + 0.7vw) !important;
 }
 
 .product-color {
-  height: 2vw;
-  width: 2vw;
+  height: calc(0.7rem + 0.7vw);
+  width: calc(0.7rem + 0.7vw);
   display: inline-block;
 }
 
@@ -91,16 +108,25 @@
   margin-left: 0rem;
 }
 
+option,
+select {
+  font-size: calc(0.75rem + 0.75vw);
+}
+
 .length-holder {
   display: none;
 }
 
 .fs {
-  font-size: calc(0.8rem + 0.8vw);
+  font-size: calc(1.1rem + 1vw) !important;
 }
 
 .fs-2 {
-  font-size: calc(0.5rem + 0.8vw);
+  font-size: calc(0.8rem + 0.9vw) !important;
+}
+
+.register-text {
+  font-size: calc(0.7rem + 0.9vw) !important;
 }
 
 .card-img-top {
@@ -116,11 +142,6 @@
 
 input {
   color: black !important;
-}
-
-option,
-select {
-  font-size: smaller !important;
 }
 
 #button-addon1 {
